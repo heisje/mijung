@@ -1,0 +1,12 @@
+{
+    "name": "PlayerActions",
+    "maps": [
+        {
+            "name": "PC",
+            "id": "3570eddd-0c6d-4e10-9f31-a98ca78a3e30",
+            "actions": [],
+            "bindings": []
+        }
+    ],
+    "controlSchemes": []
+}
