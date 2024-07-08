@@ -5,7 +5,7 @@ public class EnemyManager : MonoBehaviour
 {
     public static EnemyManager Instance;
     public GameObject tigerPrefab;
-    public List<Enemy> Enemys;
+    public List<Enemy> Enemies;
 
     private void Awake()
     {
@@ -31,12 +31,12 @@ public class EnemyManager : MonoBehaviour
         GameObject tigerObject = Instantiate(tigerPrefab, transform);
         Tiger tiger = tigerObject.GetComponent<Tiger>();
         tiger.Initialize(100, 20);
-        Enemys.Add(tiger);
+        Enemies.Add(tiger);
     }
 
     public bool CheckAllDeadEnemy()
     {
-        foreach (var enemy in Enemys)
+        foreach (var enemy in Enemies)
         {
             if (enemy.EnemyState == EnemyStateType.Alive) return false;
         }

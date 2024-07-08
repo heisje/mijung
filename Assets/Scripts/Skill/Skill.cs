@@ -7,7 +7,7 @@ public enum SkillID
     TwoPair = 1,
     ThreeOfAKind = 2,
     FourOfAKind = 3,
-    SmaillStraight = 4,
+    SmallStraight = 4,
     LargeStraight = 5,
     FiveOfAKind = 6,
 }

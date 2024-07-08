@@ -4,18 +4,6 @@ using UnityEngine;
 
 public class SkipButton : MonoBehaviour, IClickable
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void OnClick()
     {
         GameSession.Instance.OnSkillActive(OnSkipSkill, GameSession.Instance.Player);

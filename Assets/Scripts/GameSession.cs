@@ -41,18 +41,25 @@ public class GameSession : MonoBehaviour, IClickable
         {
             Current = RoundStateType.Main;
             // 메인화면 ------------------------------
-
             RollCountText.ChangeText("메인화면");
 
             // -------------------------------------
             await WaitForUserInput();
             Current = RoundStateType.SelectSession;
             // 세선 선택 ------------------------------
-
-            RollCountText.ChangeText("세선선택");
+            RollCountText.ChangeText("캐릭터 선택");
+            KeyValuePair<int, string>[] choiceCharacter = new KeyValuePair<int, string>[]
+                   {
+                        new(0, "검사"),
+                        new(1, "영기"),
+                        new(2, "총사")
+                   };
+            int i = await SelectManager.Instance.SelectButtonGroup(choiceCharacter);
+            await CharacterLoader.Instance.LoadCharacterPrefab((CharacterType)i, Player);
 
             // -------------------------------------
             await WaitForUserInput();
+            Player.SelectCharacter(i);
             Current = RoundStateType.SelectEnemy;
             // 적 선택, 던전 로딩, 카드 로딩 ------------------------------
 
@@ -130,6 +137,11 @@ public class GameSession : MonoBehaviour, IClickable
                     if (selectType == RoundStateType.ActiveSkill) Current = RoundStateType.ActiveSkill;
                 }
                 // 스킬사용 -> StartRound ------------------
+                foreach (Enemy enemy in EnemyManager.Instance.Enemies)
+                {
+                    Player.TakeDamage(enemy.Attack());
+                }
+
                 RollCountText.ChangeText("적은 ___의 데미지를 입었습니다.");
                 if (EnemyManager.Instance.CheckAllDeadEnemy())
                 {

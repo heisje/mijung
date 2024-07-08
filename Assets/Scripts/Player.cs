@@ -1,60 +1,75 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
-public class Player : MonoBehaviour, ICharacter
+public class Player : Character
 {
     public Dice[] HaveDices;
     public int NOfRoll = 3; // 최대 굴리기 횟수
+    public CharacterType CharacterType;
+    public new int Health;
     public SortedDictionary<CombinationType, Combi> HaveCombiDict;   // 처음 가지고 있는 조합
     public SkillCardSet initialSkillCardSet; // 초기 카드 팩
 
     // 스킬카드를 저장해두는 곳. 
     public List<Skill> HaveSkillList;
 
-    public int Health { get; set; }
-    public SortedDictionary<StateConditionType, int> StateCondition { get; set; }
-
-    private void Awake()
-    {
-        HaveCombiDict = new SortedDictionary<CombinationType, Combi>
-        {
-            { CombinationType.Aces, new Top(CombinationType.Aces, 1) },
-            { CombinationType.Twos, new Top(CombinationType.Twos, 2) },
-            { CombinationType.Threes, new Top(CombinationType.Threes, 3) },
-            { CombinationType.Fours, new Top(CombinationType.Fours, 4) },
-            { CombinationType.Fives, new Top(CombinationType.Fives, 5) },
-            { CombinationType.Sixes, new Top(CombinationType.Sixes, 6) },
-            { CombinationType.Chance, new Chance() },
-            { CombinationType.TwoPair, new TwoPair() },
-            { CombinationType.ThreeOfAKind, new ThreeOfAKind() },
-            { CombinationType.FourOfAKind, new FourOfAKind() },
-            { CombinationType.FullHouse, new FullHouse() },
-            { CombinationType.SmallStraight, new SmallStraight() },
-            { CombinationType.LargeStraight, new LargeStraight() },
-            { CombinationType.Yahtzee, new Yahtzee() }
-        };
-
-        HaveSkillList = new(){
-            new OnePairSkill(),
-            new TwoPairSkill(),
-            new ThreeOfAKindSkill(),
-            new FourOfAKindSkill(),
-            new SmaillStraightSkill(),
-            new LargeStraightSkill(),
-            new FiveOfAKindSkill(),
-
-        };
-    }
+    // Hp
+    public ChangeTMP ChangeTMP;
 
     public int[] GetDiceValues()
     {
         return HaveDices.Select(dice => dice.Value).ToArray();
     }
 
-    public void TakeDamage(int damage)
+    public void SelectCharacter(int i)
     {
-        throw new System.NotImplementedException();
+        if (Enum.TryParse(i.ToString(), out CharacterType characterType))
+        {
+
+            switch (characterType)
+            {
+                case CharacterType.Swordsman:
+                    CharacterType = CharacterType.Swordsman;
+                    break;
+                case CharacterType.Spirit:
+                    CharacterType = CharacterType.Spirit;
+                    break;
+                case CharacterType.Gunner:
+                    CharacterType = CharacterType.Gunner;
+                    break;
+                default:
+                    break;
+            }
+            Health = 100;
+
+            HaveSkillList = new(){
+                new OnePairSkill(),
+                new TwoPairSkill(),
+                new ThreeOfAKindSkill(),
+                new FourOfAKindSkill(),
+                new SmallStraightSkill(),
+                new LargeStraightSkill(),
+                new FiveOfAKindSkill(),
+            };
+        }
+        else
+        {
+            Debug.LogError("캐릭터 선택 실패");
+        }
     }
+
+    public override void TakeDamage(int damage)
+    {
+        Health -= damage;
+        if (ChangeTMP == null)
+        {
+            ChangeTMP = GetComponentInChildren<ChangeTMP>();
+        }
+        ChangeTMP.ChangeText(Health.ToString());
+    }
+
 }

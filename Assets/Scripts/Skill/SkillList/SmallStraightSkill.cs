@@ -1,12 +1,12 @@
 using System;
 using Unity.VisualScripting;
 
-public class SmaillStraightSkill : Skill
+public class SmallStraightSkill : Skill
 {
     // 생성자에서 멤버 변수 초기화
-    public SmaillStraightSkill()
+    public SmallStraightSkill()
     {
-        Initialize(SkillID.SmaillStraight);
+        Initialize(SkillID.SmallStraight);
     }
 
     // IsPossible 상태는 스킬 매니저에서 바꿔주는 것을 의도함

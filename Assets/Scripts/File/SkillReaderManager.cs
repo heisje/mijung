@@ -27,7 +27,7 @@ public class SkillReaderManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            // DontDestroyOnLoad(gameObject);
             LoadSkillData();
         }
         else

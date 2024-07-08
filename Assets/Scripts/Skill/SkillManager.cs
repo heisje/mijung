@@ -52,25 +52,30 @@ public class SkillManager : MonoBehaviour
             string isPossible = skill.IsPossible ? " O" : " X";
             skillCardInstance.UpdateText(skill.Name + isPossible);
 
+            RectTransform rectTransform = skillCardInstance.GetComponent<RectTransform>();
+            float width = rectTransform.rect.width;
+            float height = rectTransform.rect.height;
+
+
             // 인스턴스의 속성을 설정
             skillCardInstance.transform.localPosition = startPosition;
 
             // 위치 업데이트
-            startPosition.y -= 30; // 로컬 좌표 기준으로 y축 위치를 변경
+            startPosition.y -= height + 10; // 로컬 좌표 기준으로 y축 위치를 변경
         }
     }
 
-    private static Vector3 CalculateRightCenterPosition()
-    {
-        // 메인 카메라의 오른쪽 중앙 위치를 계산합니다.
-        Camera mainCamera = Camera.main;
-        Vector3 rightCenterViewport = new Vector3(1, 0.5f, mainCamera.nearClipPlane);
-        Vector3 rightCenterWorldPosition = mainCamera.ViewportToWorldPoint(rightCenterViewport);
+    // private static Vector3 CalculateRightCenterPosition()
+    // {
+    //     // 메인 카메라의 오른쪽 중앙 위치를 계산합니다.
+    //     Camera mainCamera = Camera.main;
+    //     Vector3 rightCenterViewport = new Vector3(1, 0.5f, mainCamera.nearClipPlane);
+    //     Vector3 rightCenterWorldPosition = mainCamera.ViewportToWorldPoint(rightCenterViewport);
 
-        // 스크린 스페이스로 변환하여 UI 위치를 설정합니다.
-        Vector3 rightCenterScreenPosition = mainCamera.WorldToScreenPoint(rightCenterWorldPosition);
-        rightCenterScreenPosition.z = 0; // UI에서는 z축이 필요 없습니다.
+    //     // 스크린 스페이스로 변환하여 UI 위치를 설정합니다.
+    //     Vector3 rightCenterScreenPosition = mainCamera.WorldToScreenPoint(rightCenterWorldPosition);
+    //     rightCenterScreenPosition.z = 0; // UI에서는 z축이 필요 없습니다.
 
-        return rightCenterScreenPosition;
-    }
+    //     return rightCenterScreenPosition;
+    // }
 }

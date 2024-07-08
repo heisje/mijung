@@ -27,6 +27,7 @@ public class Dice : ClickDragAndDrop
 
     private void Awake()
     {
+        IsDragAndDropPossible = true;
         // DiceVisual > Canvas > Text(TMP)
         Transform diceVisualTransform = transform.Find("DiceVisual");
         if (diceVisualTransform != null)
@@ -88,6 +89,15 @@ public class Dice : ClickDragAndDrop
         }
     }
 
+    public override void OnDragStart()
+    {
+        if (IsDragAndDropPossible)
+        {
+            StartPosition = transform.position;
+            isDragging = true;
+        }
+    }
+
     // 상태 변경 시 DiceVisual 업데이트
     private void UpdateVisual()
     {
@@ -100,6 +110,15 @@ public class Dice : ClickDragAndDrop
             DiceVisual.SetColor(Color.yellow);
         }
     }
+
+    public override void OnDrag(Vector3 position)
+    {
+        Vector3 newPosition = position;
+        newPosition.z = -30; // z축 고정
+        transform.position = newPosition;
+    }
+
+
 
 
     public override void OnDrop(RaycastHit[] hits)
@@ -121,6 +140,7 @@ public class Dice : ClickDragAndDrop
         {
             transform.position = StartPosition;
         }
+        isDragging = false;
     }
 
 }
