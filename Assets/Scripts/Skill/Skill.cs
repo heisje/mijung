@@ -1,61 +1,95 @@
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
-public enum SkillID
+
+
+[Serializable]
+public class Skill
 {
-    OnePair = 0,
-    TwoPair = 1,
-    ThreeOfAKind = 2,
-    FourOfAKind = 3,
-    SmallStraight = 4,
-    LargeStraight = 5,
-    FiveOfAKind = 6,
-}
-
-
-public abstract class Skill
-{
+    // csv에서 받아오는 데이터 --------------------------------------------
     public SkillID ID;
     public string Name;     // 스킬 이름
-    public string DamageFormula;
+    public string Ko;       // 한글
     public string DefaultDescription;   // 기본 설명 텍스트
-    public string Description;   // 상태가 변경된 텍스트
-    public SkillTargetType SkillTargetType;     // 스킬 타겟을 선택하는 종류
+    public CombiType Combi;
+    public int Unique;
     public int DefaultCooldown;                 // 기존 쿨타임
+    public SkillTargetType SkillTarget;     // 스킬 타겟을 선택하는 종류
+    public List<KeyValuePair<FormulaType, string>> Formulas;
+
+    // 추가적인 상태 ------------------------------------------------------
+
+    // public string DamageFormula;    // 상태가 변경된 텍스트
+    public string Description;   // 상태가 변경된 텍스트
     public int Cooldown = 0;             // 상태저장 쿨타임
     public bool IsPossible = false;             // 여러 조건으로 인한 스킬 사용가능 여부 판단
 
-    protected void Initialize(SkillID id)
+    public Skill(SkillID id)
     {
         ID = id;
-        SkillData skillData = SkillReaderManager.Instance.GetSkillData(ID);
-        if (skillData != null)
+        SkillData skillData = SkillReaderManager.Instance.GetSkillData(id);
+
+        if (skillData == null)
         {
-            Name = skillData.Name;
-            DamageFormula = skillData.DamageFormula;
-            SkillTargetType = skillData.SkillTargetType;
-            DefaultCooldown = skillData.DefaultCooldown;
+            throw new ArgumentException($"Invalid SkillID: {id}");
         }
+
+        Name = skillData.Ko;
+        Ko = skillData.Ko;
+        DefaultDescription = skillData.Description;
+        Combi = skillData.Combi;
+        Unique = skillData.Unique;
+        DefaultCooldown = skillData.DefaultCooldown;
+        SkillTarget = skillData.Target;
+        Formulas = skillData.FormulaList;
+
     }
     // 오로지 주사위로 가능한지 여부 체크
-    public abstract bool OnCheck(DiceCalculateDto diceDto);
-
-    // 스킬 사용 시 효과
-    public abstract bool OnSkill<T>(DiceCalculateDto diceDto, T target) where T : ICharacter;
-
-    // 현재 상태에 따라 설명 업데이트
-    public abstract void UpdateDescription(DiceCalculateDto diceDto, Player p);
-
-    public int CalculateDamage(int largePip)
+    public virtual bool OnCheck(DiceCalculateDto diceDto)
     {
-        // damageFormula 문자열에서 "{largePip}" 플레이스홀더를 실제 값으로 대체합니다.
-        string formula = DamageFormula.Replace("{largePip}", largePip.ToString());
-
-        // EvaluateFormula 메서드를 호출하여 대체된 공식을 계산합니다.
-        return EvaluateFormula(formula);
+        if (SkillCalManager.Instance.CheckCombi(Combi, diceDto))
+        {
+            IsPossible = true;
+        }
+        else
+        {
+            IsPossible = false;
+        }
+        return IsPossible;
     }
 
-    public int EvaluateFormula(string formula)
+    // 스킬 사용 시 효과
+    public virtual bool OnSkill<T>(DiceCalculateDto diceDto, T target, Player player, List<Enemy> enemies) where T : Character
+    {
+        return SkillCalManager.Instance.OnDefinedSkill<T>(this, diceDto, target, player, enemies);
+    }
+
+    // 현재 상태에 따라 설명 업데이트
+    public virtual void UpdateDescription(DiceCalculateDto diceDto, Player p)
+    {
+        // if (OnCheck(diceDto))
+        // {
+        //     if (diceDto.PairLargePips.TryGetValue(5, out int largePip))
+        //     {
+        //         Description = DefaultDescription.Replace("{LargePip}", largePip.ToString());
+        //         return;
+        //     }
+        // }
+        Description = DefaultDescription;
+    }
+
+    public virtual int CalculateDamage(string formula, int largePip)
+    {
+        // damageFormula 문자열에서 "{largePip}" 플레이스홀더를 실제 값으로 대체합니다.
+        string formulaResult = formula.Replace("{largePip}", largePip.ToString());
+
+        // EvaluateFormula 메서드를 호출하여 대체된 공식을 계산합니다.
+        return EvaluateFormula(formulaResult);
+    }
+
+    public virtual int EvaluateFormula(string formula)
     {
         // DataTable을 사용하여 수식을 계산합니다.
         var dataTable = new System.Data.DataTable();

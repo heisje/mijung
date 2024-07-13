@@ -4,7 +4,7 @@ public abstract class Combi
 {
     public bool IsPossible { get; private set; }    // 가능 여부
     public long Score;
-    public CombinationType Type { get; set; }       // 타입 매칭
+    public CombiType Type { get; set; }       // 타입 매칭
     public int Pip { get; set; }                    // 눈
 
     // 파생 클래스에서 구현할 메서드

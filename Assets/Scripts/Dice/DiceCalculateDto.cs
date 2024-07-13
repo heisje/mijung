@@ -13,13 +13,15 @@ public class DiceCalculateDto
 
     // Key: Pair의 개수, Value: MaxPip
     public SortedDictionary<int, int> PairLargePips { get; }
+    public SortedDictionary<int, int> StraightLargePips { get; }
 
-    public DiceCalculateDto(int[] countList, List<KeyValuePair<int, int>> sortedCountList, long sum, SortedDictionary<int, int> pairMaxPips, int maxStraightCount)
+    public DiceCalculateDto(int[] countList, List<KeyValuePair<int, int>> sortedCountList, long sum, SortedDictionary<int, int> pairMaxPips, int maxStraightCount, SortedDictionary<int, int> straightLargePips)
     {
         CountList = countList;
         SortedCountList = sortedCountList;
         Sum = sum;
         PairLargePips = pairMaxPips;
         MaxStraightCount = maxStraightCount;
+        StraightLargePips = straightLargePips;
     }
 }

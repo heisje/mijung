@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class ClickDragAndDrop : MonoBehaviour, IClickable
 {
-    public Vector3 StartPosition;
+    protected Vector3 StartPosition;
     protected bool isDragging; // 드래그 중인지 여부
     public bool IsDragAndDropPossible { get; set; } = true;
 

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, ICharacter, IClickable
+public class Enemy : Character, IClickable
 {
     public EnemyStateType EnemyState { get; set; }
     public int Damage { get; set; }

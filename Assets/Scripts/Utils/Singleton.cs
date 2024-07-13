@@ -35,5 +35,8 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         Instantiation();
     }
 
-    protected abstract void Instantiation();
+    protected virtual void Instantiation()
+    {
+
+    }
 }

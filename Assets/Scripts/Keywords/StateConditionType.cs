@@ -1,4 +1,5 @@
 public enum StateConditionType
 {
-    DamageUp
+    Mark,
+    Empower,
 }

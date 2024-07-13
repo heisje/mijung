@@ -4,8 +4,8 @@ using UnityEngine;
 public class SkillCard : ClickDragAndDrop
 {
     public Skill Skill;
-    public ChangeTMP ChangeTMP;
-
+    public SkillID SkillID;
+    protected ChangeTMP ChangeTMP;
 
     public override void OnDragStart()
     {
@@ -41,18 +41,7 @@ public class SkillCard : ClickDragAndDrop
             foreach (RaycastHit hit in hits)
             {
                 Debug.Log(hit.transform.name);
-                if (Skill.SkillTargetType == SkillTargetType.EnemySingle)
-                {
-                    Enemy targetEnemy = GetHitComponent<Enemy>(hit);
-
-                    // 사용이 가능한 지점
-                    if (targetEnemy != null)
-                    {
-                        ChangeTMP.ChangeText("사용됨");
-                        GameSession.Instance.OnSkillActive(Skill.OnSkill, targetEnemy);
-                    }
-                }
-                else if (Skill.SkillTargetType == SkillTargetType.EnemyAll)
+                if (Skill.SkillTarget == SkillTargetType.EnemySingle)
                 {
                     Enemy targetEnemy = GetHitComponent<Enemy>(hit);
 

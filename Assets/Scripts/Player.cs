@@ -10,15 +10,21 @@ public class Player : Character
     public Dice[] HaveDices;
     public int NOfRoll = 3; // 최대 굴리기 횟수
     public CharacterType CharacterType;
-    public new int Health;
-    public SortedDictionary<CombinationType, Combi> HaveCombiDict;   // 처음 가지고 있는 조합
-    public SkillCardSet initialSkillCardSet; // 초기 카드 팩
+    public List<SkillID> initialSkillCardList = new() {
+        SkillID.OnePair,
+        SkillID.TwoPair,
+        SkillID.ThreeOfAKind,
+        SkillID.FourOfAKind,
+        SkillID.SmallStraight,
+        SkillID.LargeStraight,
+        SkillID.FiveOfAKind
+    };
 
     // 스킬카드를 저장해두는 곳. 
-    public List<Skill> HaveSkillList;
+    public List<Skill> HaveSkillList = new();
 
-    // Hp
-    public ChangeTMP ChangeTMP;
+    // Hp 변환용
+    public ChangeTMP ChangeTMP { get; set; }
 
     public int[] GetDiceValues()
     {
@@ -29,7 +35,6 @@ public class Player : Character
     {
         if (Enum.TryParse(i.ToString(), out CharacterType characterType))
         {
-
             switch (characterType)
             {
                 case CharacterType.Swordsman:
@@ -46,15 +51,10 @@ public class Player : Character
             }
             Health = 100;
 
-            HaveSkillList = new(){
-                new OnePairSkill(),
-                new TwoPairSkill(),
-                new ThreeOfAKindSkill(),
-                new FourOfAKindSkill(),
-                new SmallStraightSkill(),
-                new LargeStraightSkill(),
-                new FiveOfAKindSkill(),
-            };
+            initialSkillCardList.ForEach((skillId) =>
+            {
+                HaveSkillList.Add(SkillManager.Instance.CreateSkill(skillId));
+            });
         }
         else
         {

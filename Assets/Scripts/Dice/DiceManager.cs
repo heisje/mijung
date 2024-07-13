@@ -22,7 +22,7 @@ public class DiceManager : MonoBehaviour
     public DiceCalculateDto Calculate(int[] values)
     {
         // 조합 결과를 저장할 공간
-        var resultCombinations = new SortedDictionary<CombinationType, long> { };
+        var resultCombinations = new SortedDictionary<CombiType, long> { };
 
         // 객체 변경
         int maxPip = values.Max();
@@ -53,16 +53,27 @@ public class DiceManager : MonoBehaviour
             pairMaxPips[i] = maxPipForPair;
         }
 
+        // 스트레이트 길이를 재는 함수
+        // 스트레이트시 LargePip도 같이 구한다.
         int straightCount = 0;
         int maxStraightCount = 0;
-        foreach (int count in countList)
+        SortedDictionary<int, int> straightLargePips = new();
+        for (int i = 0; i < countList.Length; i++)
         {
-            if (count >= 1)
+            if (countList[i] >= 1)
+            {
                 maxStraightCount = Math.Max(++straightCount, maxStraightCount);
+                int findStraightLargePip = straightCount;
+                while (findStraightLargePip >= 1)
+                {
+                    straightLargePips[straightCount] = i;
+                    findStraightLargePip -= 1;
+                }
+            }
             else
                 straightCount = 0;
         }
 
-        return new DiceCalculateDto(countList, sortedCountList, sum, pairMaxPips, maxStraightCount);
+        return new DiceCalculateDto(countList, sortedCountList, sum, pairMaxPips, maxStraightCount, straightLargePips);
     }
 }

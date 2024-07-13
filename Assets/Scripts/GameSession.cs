@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
 
-public class GameSession : MonoBehaviour, IClickable
+public class GameSession : Singleton<GameSession>, IClickable
 {
-    public static GameSession Instance { get; private set; }    // 참조를 위한 싱글톤 패턴
     public Player Player;
     public int Id;
 
@@ -17,17 +16,7 @@ public class GameSession : MonoBehaviour, IClickable
     public int NOfRoll = 0;    // 게임 라운드 횟수 저장
     public RoundStateType Current = RoundStateType.Main;
     public DiceCalculateDto DiceDTO;
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+
 
     void Start()
     {
@@ -199,12 +188,12 @@ public class GameSession : MonoBehaviour, IClickable
     }
 
     // OnSkill을 대신 처리해주는 함수
-    public void OnSkillActive<T>(Func<DiceCalculateDto, T, bool> onSkillFunction, T target) where T : ICharacter
+    public void OnSkillActive<T>(Func<DiceCalculateDto, T, Player, List<Enemy>, bool> onSkillFunction, T target) where T : Character
     {
         // 스킬을 사용했을 때 액티브
         if (userInputTaskCompletionSource != null && !userInputTaskCompletionSource.Task.IsCompleted)
         {
-            bool result = onSkillFunction(Instance.DiceDTO, target);
+            bool result = onSkillFunction(Instance.DiceDTO, target, Player, EnemyManager.Instance.Enemies);
             userInputTaskCompletionSource.SetResult(RoundStateType.ActiveSkill);
         }
     }
@@ -215,11 +204,11 @@ public class GameSession : MonoBehaviour, IClickable
         return userInputTaskCompletionSource.Task;
     }
 
-    string ConvertDictionaryToText(SortedDictionary<CombinationType, long> dictionary)
+    string ConvertDictionaryToText(SortedDictionary<CombiType, long> dictionary)
     {
         System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
-        foreach (KeyValuePair<CombinationType, long> kvp in dictionary)
+        foreach (KeyValuePair<CombiType, long> kvp in dictionary)
         {
             sb.AppendLine($"Key: {kvp.Key}, Value: {kvp.Value}");
         }

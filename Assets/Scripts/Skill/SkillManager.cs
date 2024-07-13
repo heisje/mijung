@@ -1,23 +1,24 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-public class SkillManager : MonoBehaviour
+public class SkillManager : Singleton<SkillManager>
 {
-    public static SkillManager Instance;
+    public SkillCard SkillCardPrefab; // SkillButton 프리팹을 드래그하여 할당 (static)
 
-    private void Awake()
+    public Skill CreateSkill(SkillID skillID)
     {
-        if (Instance == null)
+        try
         {
-            Instance = this;
+            return new Skill(skillID);
         }
-        else
+        catch (ArgumentException ex)
         {
-            Destroy(gameObject);
+            Console.WriteLine($"Failed to create skill: {ex.Message}");
+            return null;
         }
     }
 
-    public SkillCard SkillCardPrefab; // SkillButton 프리팹을 드래그하여 할당 (static)
-
+    // 스킬의 사용가능 여부를 변경(외부에서 사용하는 함수.)
     public void UpdateSkills(DiceCalculateDto DiceDTO, Player player)
     {
         foreach (var skill in player.HaveSkillList)
@@ -32,6 +33,7 @@ public class SkillManager : MonoBehaviour
         }
     }
 
+    // 스킬의 사용가능 여부를 변경(외부에서 사용하는 함수.)
     public void ChangeIsPossibleSkill(Player player, bool state)
     {
         foreach (var skill in player.HaveSkillList)
@@ -40,6 +42,7 @@ public class SkillManager : MonoBehaviour
         }
     }
 
+    // 스킬카드 생성
     public void CreatePlayerSkillCard(Player player)
     {
         Vector3 startPosition = Vector3.zero; // CalculateRightCenterPosition(); // 시작 위치를 계산합니다.
@@ -49,6 +52,7 @@ public class SkillManager : MonoBehaviour
             // SkillButton 프리팹을 인스턴스화
             SkillCard skillCardInstance = Instantiate(SkillCardPrefab, transform);
             skillCardInstance.Skill = skill;
+            skillCardInstance.SkillID = skill.ID;
             string isPossible = skill.IsPossible ? " O" : " X";
             skillCardInstance.UpdateText(skill.Name + isPossible);
 
