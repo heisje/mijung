@@ -47,7 +47,7 @@ public class SkillCalManager : Singleton<SkillCalManager>
         int repeatCount = 1;
         foreach (var formula in skill.Formulas)
         {
-            FormulaType f = formula.Key;
+            FormulaType f = formula.Type;
             string s = formula.Value;
             KeyValuePair<FormulaType, string> replaceKeyPair = new(f, s.Replace("{largePip}", largePip.ToString()));
             if (f == FormulaType.Repeat)
@@ -63,12 +63,12 @@ public class SkillCalManager : Singleton<SkillCalManager>
         {
             foreach (var formula in skill.Formulas) // Formula 순회
             {
-                FormulaType f = formula.Key;
+                FormulaType f = formula.Type;
                 string s = formula.Value;
                 string replaceKeyPair = s.Replace("{largePip}", largePip.ToString());
 
                 int value = EvaluateFormula(replaceKeyPair);
-                switch (formula.Key)
+                switch (formula.Type)
                 {
                     case FormulaType.TargetAttack:
                         target.TakeDamage(value + player.GetStateCondition(StateConditionType.Empower));

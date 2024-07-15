@@ -17,7 +17,7 @@ public class Skill
     public int Unique;
     public int DefaultCooldown;                 // 기존 쿨타임
     public SkillTargetType SkillTarget;     // 스킬 타겟을 선택하는 종류
-    public List<KeyValuePair<FormulaType, string>> Formulas;
+    public List<Formula<FormulaType>> Formulas;
 
     // 추가적인 상태 ------------------------------------------------------
 
@@ -25,6 +25,12 @@ public class Skill
     public string Description;   // 상태가 변경된 텍스트
     public int Cooldown = 0;             // 상태저장 쿨타임
     public bool IsPossible = false;             // 여러 조건으로 인한 스킬 사용가능 여부 판단
+
+    // 조건에 따라 효과가 변경되는 경우
+    public ChangerType Changer;
+    public int ChangerValue;
+    public List<Formula<FormulaType>> ChangerFormulas;
+
 
     public Skill(SkillID id)
     {

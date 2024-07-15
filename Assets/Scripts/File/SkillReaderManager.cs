@@ -13,7 +13,10 @@ public class SkillData
     public int Unique;
     public int DefaultCooldown;
     public SkillTargetType Target;
-    public List<KeyValuePair<FormulaType, string>> FormulaList;
+    public List<Formula<FormulaType>> FormulaList;
+    public ChangerType Changer;
+    public string ChangerValue;
+    public List<Formula<FormulaType>> ChangerFormulaList;
 }
 
 public class SkillReaderManager : Singleton<SkillReaderManager>
@@ -48,26 +51,17 @@ public class SkillReaderManager : Singleton<SkillReaderManager>
                 if (values.Length == 0 || values[0] != "TRUE") throw new Exception();
 
                 if (!Enum.TryParse(typeof(SkillID), values[1], out var id) || !Enum.TryParse(typeof(CombiType), values[5], out var combi) ||
-                   !Enum.TryParse(typeof(SkillTargetType), values[8], out var target))
+                   !Enum.TryParse(typeof(SkillTargetType), values[8], out var target) || !Enum.TryParse(typeof(ChangerType), values[15], out var changer))
                 {
                     throw new Exception(); // 열거형 파싱 실패 시 다음 루프로 이동
                 }
 
-                int StartIndex = 10;
-                int lastIndex = StartIndex + Convert.ToInt32(values[9]) * 2;
-                List<KeyValuePair<FormulaType, string>> formulaList = new();
-                while (StartIndex < lastIndex)
-                {
-                    if (Enum.TryParse(typeof(FormulaType), values[StartIndex], out var formulaType))
-                    {
-                        formulaList.Add(new KeyValuePair<FormulaType, string>((FormulaType)formulaType, values[StartIndex + 1]));
-                    }
-                    else
-                    {
-                        throw new Exception($"Error parsing FormulaType at index {StartIndex}: {values[StartIndex]}");
-                    }
-                    StartIndex += 2;
-                }
+                // 포뮬라 파싱
+                List<Formula<FormulaType>> formulaList = FormulaPhaser(9, values);
+
+
+                // Changer 포뮬라 파싱
+                List<Formula<FormulaType>> changerFormulaList = FormulaPhaser(12, values);
 
                 SkillData skillData = new SkillData
                 {
@@ -78,7 +72,10 @@ public class SkillReaderManager : Singleton<SkillReaderManager>
                     Unique = Convert.ToInt32(values[6]),
                     DefaultCooldown = Convert.ToInt32(values[7]),
                     Target = (SkillTargetType)target,
-                    FormulaList = formulaList
+                    FormulaList = formulaList,
+                    Changer = (ChangerType)changer,
+                    ChangerValue = values[16],
+                    ChangerFormulaList = changerFormulaList
                 };
                 SkillDataDict.Add(skillData.ID, skillData);
                 SkillDataList.Add(skillData);
@@ -102,5 +99,23 @@ public class SkillReaderManager : Singleton<SkillReaderManager>
             Debug.LogWarning($"Skill ID {id} not found.");
             return null;
         }
+    }
+
+    public List<Formula<FormulaType>> FormulaPhaser(int startIndex, string[] values)
+    {
+        List<Formula<FormulaType>> formulaList = new();
+        for (int j = 0; j < 3; j++)
+        {
+            if (Enum.TryParse(typeof(FormulaType), values[startIndex + j * 2], out var formulaType))
+            {
+                if ((FormulaType)formulaType == FormulaType.None) continue;
+                formulaList.Add(new Formula<FormulaType>((FormulaType)formulaType, values[startIndex + j * 2 + 1]));
+            }
+            else
+            {
+                throw new Exception($"Error parsing FormulaType at index {startIndex + j * 2}: {values[startIndex + j * 2]}");
+            }
+        }
+        return formulaList;
     }
 }
