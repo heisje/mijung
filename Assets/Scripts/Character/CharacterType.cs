@@ -1,6 +1,7 @@
 public enum CharacterType
 {
-    Swordsman = 0,
-    Spirit = 1,
-    Gunner = 2,
+    Public = 0, // 공용을 저장하기 위함
+    Swordsman,
+    Spirit,
+    Gunner,
 }

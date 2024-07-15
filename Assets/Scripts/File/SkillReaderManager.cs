@@ -17,6 +17,7 @@ public class SkillData
     public ChangerType Changer;
     public string ChangerValue;
     public List<Formula<FormulaType>> ChangerFormulaList;
+    public CharacterType Character;
 }
 
 public class SkillReaderManager : Singleton<SkillReaderManager>
@@ -28,13 +29,30 @@ public class SkillReaderManager : Singleton<SkillReaderManager>
 
     private static string SPLIT_RE = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";
     private static string LINE_SPLIT_RE = @"\r\n|\n\r|\n|\r";
-
+    private string[] fileNames = { "SkillData - PublicSkills", "SkillData - SwordsManSkills" };
     protected override void Instantiation()
     {
-        TextAsset csvFile = Resources.Load<TextAsset>("SkillData - PublicSkills");
+        foreach (var fileName in fileNames)
+        {
+            switch (fileName)
+            {
+                case "SkillData - PublicSkills":
+                    CSVToSkill(fileName, CharacterType.Public);
+                    break;
+                case "SkillData - SwordsManSkills":
+
+                    CSVToSkill(fileName, CharacterType.Swordsman);
+                    break;
+            }
+        }
+    }
+
+    public void CSVToSkill(string fileName, CharacterType character)
+    {
+        TextAsset csvFile = Resources.Load<TextAsset>(fileName);
         if (csvFile == null)
         {
-            Debug.LogError("CSV file not found at path: Resources/SkillData - PublicSkills");
+            Debug.LogError($"CSV file not found at path: Resources/${fileName}");
             return;
         }
 
@@ -48,12 +66,24 @@ public class SkillReaderManager : Singleton<SkillReaderManager>
             {
                 var values = Regex.Split(lines[i], SPLIT_RE);
 
-                if (values.Length == 0 || values[0] != "TRUE") throw new Exception();
 
-                if (!Enum.TryParse(typeof(SkillID), values[1], out var id) || !Enum.TryParse(typeof(CombiType), values[5], out var combi) ||
-                   !Enum.TryParse(typeof(SkillTargetType), values[8], out var target) || !Enum.TryParse(typeof(ChangerType), values[15], out var changer))
+                if (values.Length == 0 || values[0] != "TRUE") throw new Exception("Invalid or inactive row.");
+
+                if (!Enum.TryParse(typeof(SkillID), values[1], out var id))
                 {
-                    throw new Exception(); // 열거형 파싱 실패 시 다음 루프로 이동
+                    throw new Exception($"Failed to parse SkillID: {values[1]}");
+                }
+                if (!Enum.TryParse(typeof(CombiType), values[5], out var combi))
+                {
+                    throw new Exception($"Failed to parse CombiType: {values[5]}");
+                }
+                if (!Enum.TryParse(typeof(SkillTargetType), values[8], out var target))
+                {
+                    throw new Exception($"Failed to parse SkillTargetType: {values[8]}");
+                }
+                if (!Enum.TryParse(typeof(ChangerType), values[15], out var changer))
+                {
+                    throw new Exception($"Failed to parse ChangerType: {values[15]}");
                 }
 
                 // 포뮬라 파싱
@@ -61,7 +91,7 @@ public class SkillReaderManager : Singleton<SkillReaderManager>
 
 
                 // Changer 포뮬라 파싱
-                List<Formula<FormulaType>> changerFormulaList = FormulaPhaser(12, values);
+                List<Formula<FormulaType>> changerFormulaList = FormulaPhaser(17, values);
 
                 SkillData skillData = new SkillData
                 {
@@ -75,14 +105,15 @@ public class SkillReaderManager : Singleton<SkillReaderManager>
                     FormulaList = formulaList,
                     Changer = (ChangerType)changer,
                     ChangerValue = values[16],
-                    ChangerFormulaList = changerFormulaList
+                    ChangerFormulaList = changerFormulaList,
+                    Character = character
                 };
                 SkillDataDict.Add(skillData.ID, skillData);
                 SkillDataList.Add(skillData);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error processing line {i}: {ex.Message}");
+                Debug.LogWarning($"CSV Parse Error {fileName} Line {i} : {ex.Message}\n{ex.StackTrace}");
                 continue;
             }
         }

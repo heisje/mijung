@@ -5,8 +5,6 @@ public class Enemy : Character, IClickable
 {
     public EnemyStateType EnemyState { get; set; }
     public int Damage { get; set; }
-    public int Health { get; set; }
-    public SortedDictionary<StateConditionType, int> StateCondition { get; set; }
     public List<int> DamageGraph { get; private set; }
     public int DamageIndex { get; private set; }
 
@@ -28,7 +26,7 @@ public class Enemy : Character, IClickable
     }
 
     // 피해를 입고 죽음 처리
-    public void TakeDamage(int damage)
+    public override void TakeDamage(int damage)
     {
         Health -= damage;
         transform.GetComponentInChildren<EnemyHP>().transform.GetComponent<ChangeTMP>().ChangeText(Health.ToString());

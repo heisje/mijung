@@ -43,9 +43,40 @@ public class SkillCalManager : Singleton<SkillCalManager>
         var largePip = CheckLargePip[skill.Combi](diceDto);
         List<KeyValuePair<FormulaType, string>> replaceFormulas = new();
 
-        // 전처리(텍스트 대치)
+        // 전처리 (텍스트 대치)
+        bool isChanger = false;
+
+        switch (skill.Changer)
+        {
+            case ChangerType.None:
+                break;
+            case ChangerType.ContainPip:
+                var pips = skill.ChangerValue.Split(",");
+                foreach (var pip in pips)
+                {
+                    if (diceDto.CountList[int.Parse(pip)] >= 1)
+                    {
+                        isChanger = true;
+                    }
+                }
+                break;
+            case ChangerType.LowHp:
+                if (player.Health <= int.Parse(skill.ChangerValue))
+                {
+                    isChanger = true;
+                }
+                break;
+        }
+        // 부합하는지 확인
+        var formulas = skill.Formulas;
+        if (isChanger)
+        {
+            formulas = skill.ChangerFormulas;
+        }
+
         int repeatCount = 1;
-        foreach (var formula in skill.Formulas)
+        // Repeat 선처리
+        foreach (var formula in formulas)
         {
             FormulaType f = formula.Type;
             string s = formula.Value;
@@ -61,7 +92,7 @@ public class SkillCalManager : Singleton<SkillCalManager>
         // 스킬 효과 발동
         for (var i = 0; i < repeatCount; i++)   // 반복만 따로 처리
         {
-            foreach (var formula in skill.Formulas) // Formula 순회
+            foreach (var formula in formulas) // Formula 순회
             {
                 FormulaType f = formula.Type;
                 string s = formula.Value;
@@ -71,6 +102,7 @@ public class SkillCalManager : Singleton<SkillCalManager>
                 switch (formula.Type)
                 {
                     case FormulaType.TargetAttack:
+
                         target.TakeDamage(value + player.GetStateCondition(StateConditionType.Empower));
                         break;
                     case FormulaType.AllAttack:

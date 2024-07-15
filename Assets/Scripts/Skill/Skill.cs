@@ -28,7 +28,7 @@ public class Skill
 
     // 조건에 따라 효과가 변경되는 경우
     public ChangerType Changer;
-    public int ChangerValue;
+    public string ChangerValue;
     public List<Formula<FormulaType>> ChangerFormulas;
 
 
@@ -50,7 +50,9 @@ public class Skill
         DefaultCooldown = skillData.DefaultCooldown;
         SkillTarget = skillData.Target;
         Formulas = skillData.FormulaList;
-
+        Changer = skillData.Changer;
+        ChangerValue = skillData.ChangerValue;
+        ChangerFormulas = skillData.ChangerFormulaList;
     }
     // 오로지 주사위로 가능한지 여부 체크
     public virtual bool OnCheck(DiceCalculateDto diceDto)

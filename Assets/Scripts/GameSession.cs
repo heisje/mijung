@@ -39,9 +39,9 @@ public class GameSession : Singleton<GameSession>, IClickable
             RollCountText.ChangeText("캐릭터 선택");
             KeyValuePair<int, string>[] choiceCharacter = new KeyValuePair<int, string>[]
                    {
-                        new(0, "검사"),
-                        new(1, "영기"),
-                        new(2, "총사")
+                        new(1, "검사"),
+                        new(2, "영기"),
+                        new(3, "총사")
                    };
             int i = await SelectManager.Instance.SelectButtonGroup(choiceCharacter);
             await CharacterLoader.Instance.LoadCharacterPrefab((CharacterType)i, Player);

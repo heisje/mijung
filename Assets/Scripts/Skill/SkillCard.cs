@@ -40,7 +40,7 @@ public class SkillCard : ClickDragAndDrop
             Vector3 closest = Vector3.zero;
             foreach (RaycastHit hit in hits)
             {
-                Debug.Log(hit.transform.name);
+
                 if (Skill.SkillTarget == SkillTargetType.EnemySingle)
                 {
                     Enemy targetEnemy = GetHitComponent<Enemy>(hit);

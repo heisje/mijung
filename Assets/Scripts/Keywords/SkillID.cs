@@ -7,4 +7,8 @@ public enum SkillID
     SmallStraight,
     LargeStraight,
     FiveOfAKind,
+    a,
+    b,
+    c,
+    d,
 }
