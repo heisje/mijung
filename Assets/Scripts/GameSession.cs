@@ -7,7 +7,6 @@ public class GameSession : Singleton<GameSession>, IClickable
 {
     public Player Player;
     public int Id;
-
     public List<int> Results;
     private TaskCompletionSource<RoundStateType> userInputTaskCompletionSource; // 어떤 입력을 했는지 저장하고, Round상태를 결정지음
     public ChangeTMP RollCountText;
@@ -16,6 +15,7 @@ public class GameSession : Singleton<GameSession>, IClickable
     public int NOfRoll = 0;    // 게임 라운드 횟수 저장
     public RoundStateType Current = RoundStateType.Main;
     public DiceCalculateDto DiceDTO;
+    public PlayerInputType PlayerInput;
 
 
     void Start()
@@ -43,7 +43,7 @@ public class GameSession : Singleton<GameSession>, IClickable
                         new(2, "영기"),
                         new(3, "총사")
                    };
-            int i = await SelectManager.Instance.SelectButtonGroup(choiceCharacter);
+            int i = await SelectManager.Instance.SelectButtonGroup(choiceCharacter, SelectManager.Instance.transform);
             await CharacterLoader.Instance.LoadCharacterPrefab((CharacterType)i, Player);
 
             // -------------------------------------
@@ -123,7 +123,8 @@ public class GameSession : Singleton<GameSession>, IClickable
                 {
                     Current = RoundStateType.WaitSkill;
                     RoundStateType selectType = await WaitForUserInput();
-                    if (selectType == RoundStateType.ActiveSkill) Current = RoundStateType.ActiveSkill;
+                    if (selectType == RoundStateType.ActiveSkill)
+                        Current = RoundStateType.ActiveSkill;
                 }
                 // 스킬사용 -> StartRound ------------------
                 foreach (Enemy enemy in EnemyManager.Instance.Enemies)
@@ -179,6 +180,15 @@ public class GameSession : Singleton<GameSession>, IClickable
     }
 
     public void OnClick()
+    {
+        // 유저가 클릭했을 때 호출되는 메서드
+        if (userInputTaskCompletionSource != null && !userInputTaskCompletionSource.Task.IsCompleted)
+        {
+            userInputTaskCompletionSource.SetResult(RoundStateType.DevGo);
+        }
+    }
+
+    public void OnClickPassButton()
     {
         // 유저가 클릭했을 때 호출되는 메서드
         if (userInputTaskCompletionSource != null && !userInputTaskCompletionSource.Task.IsCompleted)

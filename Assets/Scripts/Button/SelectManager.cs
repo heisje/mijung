@@ -8,9 +8,9 @@ public class SelectManager : Singleton<SelectManager>
     public GameObject EmptyObjectPrefab;
     private TaskCompletionSource<int> SelectedUserButton; // 어떤 입력을 했는지 저장하고, Round상태를 결정지음
 
-    public async Task<int> SelectButtonGroup(KeyValuePair<int, string>[] data)
+    public async Task<int> SelectButtonGroup(KeyValuePair<int, string>[] data, Transform targetTransform)
     {
-        GameObject emptyObject = Instantiate(EmptyObjectPrefab, transform);
+        GameObject emptyObject = Instantiate(EmptyObjectPrefab, targetTransform);
         SelectButtonGroup selectButtonsGroup = emptyObject.AddComponent<SelectButtonGroup>();
 
         selectButtonsGroup.Initialize(data, SelectButtonPrefab, this);

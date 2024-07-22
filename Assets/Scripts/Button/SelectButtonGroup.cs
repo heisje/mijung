@@ -12,9 +12,9 @@ public class SelectButtonGroup : MonoBehaviour
         {
             GameObject SelectButtonObject = Instantiate(prefab, transform);
 
-            Vector3 newPosition = SelectButtonObject.transform.position;
-            newPosition.x += 400 * i; // x 포지션 수정
-            SelectButtonObject.transform.localPosition = newPosition;
+            // Vector3 newPosition = SelectButtonObject.transform.position;
+            // newPosition.x += 400 * i; // x 포지션 수정
+            // SelectButtonObject.transform.localPosition = newPosition;
 
             SelectButton SelectButton = SelectButtonObject.AddComponent<SelectButton>();
             SelectButton.Initialization(data[i].Key, data[i].Value, this);
