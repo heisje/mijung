@@ -41,17 +41,17 @@ public class SkillCard : ClickDragAndDrop
             foreach (RaycastHit hit in hits)
             {
 
-                if (Skill.SkillTarget == SkillTargetType.EnemySingle)
-                {
-                    Enemy targetEnemy = GetHitComponent<Enemy>(hit);
+                // if (Skill.SkillTarget == SkillTargetType.EnemySingle)
+                // {
+                Enemy targetEnemy = GetHitComponent<Enemy>(hit);
 
-                    // 사용이 가능한 지점
-                    if (targetEnemy != null)
-                    {
-                        ChangeTMP.ChangeText("사용됨");
-                        GameSession.Instance.OnSkillActive(Skill.OnSkill, targetEnemy);
-                    }
+                // 사용이 가능한 지점
+                if (targetEnemy != null)
+                {
+                    ChangeTMP.ChangeText("사용됨");
+                    GameSession.Instance.OnSkillActive(Skill.OnSkill, targetEnemy);
                 }
+                // }
             }
         }
         transform.position = StartPosition;

@@ -9,6 +9,7 @@ public enum DiceState
 {
     ToBeRolled,      // 돌려야됨
     Keeped,      // 저장됨
+    Used,       // 사용됨
     Destroyed    // 파기됨
 }
 
@@ -87,6 +88,7 @@ public class Dice : ClickDragAndDrop
         {
             UpdateStat(DiceState.Keeped);
         }
+        GameSession.Instance.OnPlayerInput(PlayerInputType.SelectDice);
     }
 
     public override void OnDragStart()
@@ -108,6 +110,10 @@ public class Dice : ClickDragAndDrop
         if (State == DiceState.ToBeRolled)
         {
             DiceVisual.SetColor(Color.yellow);
+        }
+        if (State == DiceState.Used)
+        {
+            DiceVisual.SetColor(Color.red);
         }
     }
 

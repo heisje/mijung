@@ -31,6 +31,16 @@ public class Player : Character
         return HaveDices.Select(dice => dice.Value).ToArray();
     }
 
+    public int[] GetSelectedDiceValues()
+    {
+        return HaveDices.Where(dice => dice.State == DiceState.Keeped).Select(dice => dice.Value).ToArray();
+    }
+    public Dice[] GetSelectedDice()
+    {
+        return HaveDices.Where(dice => dice.State == DiceState.Keeped).ToArray();
+    }
+
+
     public void SelectCharacter(int i)
     {
         if (Enum.TryParse(i.ToString(), out CharacterType characterType))

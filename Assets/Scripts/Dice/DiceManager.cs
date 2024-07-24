@@ -25,8 +25,8 @@ public class DiceManager : MonoBehaviour
         var resultCombinations = new SortedDictionary<CombiType, long> { };
 
         // 객체 변경
-        int maxPip = values.Max();
-        int[] countList = new int[Math.Max(7, maxPip + 1)];
+
+        int[] countList = new int[Math.Max(7, 6 + 1)];
         Array.Clear(countList, 0, countList.Length);
         List<KeyValuePair<int, int>> sortedCountList;
         for (int i = 0; i < countList.Length; i++)

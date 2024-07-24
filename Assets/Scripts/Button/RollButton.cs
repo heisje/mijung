@@ -18,6 +18,6 @@ public class RollButton : MonoBehaviour, IClickable
 
     public void OnClick()
     {
-        GameSession.Instance.OnClick();
+        GameSession.Instance.OnPlayerInput(PlayerInputType.ClickRoll);
     }
 }
