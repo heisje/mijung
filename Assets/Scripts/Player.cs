@@ -74,12 +74,25 @@ public class Player : Character
 
     public override void TakeDamage(int damage)
     {
-        Health -= damage;
+        AttackOrderValue = 0;
+
+        if (Shield <= damage)
+        {
+            damage -= Shield;
+            Shield = 0;
+            AttackOrderValue = damage;
+            Health -= damage;
+        }
+        else if (Shield > damage)
+        {
+            Shield -= damage;
+        }
+
         if (ChangeTMP == null)
         {
             ChangeTMP = GetComponentInChildren<ChangeTMP>();
         }
-        ChangeTMP.ChangeText(Health.ToString());
+        ChangeTMP.ChangeText("쉴드:" + Shield.ToString() + "체력:" + Health.ToString());
     }
 
 }

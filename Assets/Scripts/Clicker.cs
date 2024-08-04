@@ -69,7 +69,18 @@ public class Clicker : MonoBehaviour
         Ray ray = m_Camera.ScreenPointToRay(mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
+            Debug.Log(hit.collider.gameObject.name);
             clickableObject = hit.collider.GetComponentInParent<IClickable>();
+            if (clickableObject != null)
+            {
+                // GetComponent를 통해 GameObject의 name 속성을 접근
+                string objectName = (clickableObject as Component).gameObject.name;
+                Debug.Log(objectName);
+            }
+            else
+            {
+                Debug.Log("No IClickable component found in parent.");
+            }
         }
     }
 

@@ -17,18 +17,6 @@ public class ModalManager : Singleton<ModalManager>
         }
     }
 
-    public async void ChangeSelect()
-    {
-        KeyValuePair<int, string>[] choiceCharacter = new KeyValuePair<int, string>[]
-            {
-                new(1, "주사위변경"),
-                new(2, "스킬변경"),
-                new(3, "유물변경"),
-                new(4, "캔슬"),
-            };
-        int i = await SelectManager.Instance.SelectButtonGroup(choiceCharacter, transform);
-    }
-
     public void ShowModal()
     {
         if (modalPanel != null)
@@ -51,10 +39,6 @@ public class ModalManager : Singleton<ModalManager>
         {
             bool afterActive = !modalPanel.activeSelf;
             modalPanel.SetActive(afterActive);
-            if (afterActive)
-            {
-                ChangeSelect();
-            }
         }
     }
 }
