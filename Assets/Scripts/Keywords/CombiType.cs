@@ -4,7 +4,7 @@ public enum CombiType
     TwoPair,
     ThreeOfAKind,
     FourOfAKind,
-    FullHouse,
+    // FullHouse,
     SmallStraight,
     LargeStraight,
     FiveOfAKind,

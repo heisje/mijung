@@ -69,9 +69,9 @@ public class Skill
     }
 
     // 스킬 사용 시 효과
-    public virtual bool OnSkill<T>(DiceCalculateDto diceDto, T target, Player player, List<Enemy> enemies) where T : Character
+    public virtual bool OnSkill<T>(DiceCalculateDto diceDto, T target) where T : Character
     {
-        return SkillCalManager.Instance.OnDefinedSkill<T>(this, diceDto, target, player, enemies);
+        return SkillCalManager.Instance.OnDefinedSkill<T>(this, diceDto, target);
     }
 
     // 현재 상태에 따라 설명 업데이트

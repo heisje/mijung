@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
 
+
+
 public class GameSession : Singleton<GameSession>
 {
     public Player Player;
-    public int Id;
-    public List<int> Results;
     private TaskCompletionSource<PlayerInputType> UserInputTaskCompletionSource; // 어떤 입력을 했는지 저장하고, Round상태를 결정지음
     public ChangeTMP RollCountText;
     public RoundStateType RoundCurrentState = RoundStateType.DevGo;
@@ -17,6 +17,8 @@ public class GameSession : Singleton<GameSession>
     public DiceCalculateDto DiceDTO;
     public DiceCalculateDto SelectedDiceDTO;
     public PlayerInputType PlayerInput;
+    public List<Character> AttackOrder;
+    public List<PlayerAction<Character>> PlayerActionList;
 
 
     void Start()
@@ -56,13 +58,23 @@ public class GameSession : Singleton<GameSession>
             RollCountText.ChangeText("적 선택");
             EnemyManager.Instance.SelectEnemy();
             SkillManager.Instance.CreatePlayerSkillCard(Player);
+
+            // 우선권 초기화
+            AttackOrder = new List<Character>();
+            AttackOrder.Add(Player);
+            foreach (var enemy in EnemyManager.Instance.Enemies)
+            {
+                AttackOrder.Add(enemy);
+            }
             // -------------------------------------
+
             await MatchPlayerInput(PlayerInputType.ClickSkip);
 
             // 라운드 시작, 주사위 굴릴 수 있음 ------------
 
             while (true)
             {
+                PlayerActionList = new();
                 SkillManager.Instance.ChangeIsPossibleSkill(Player, false);
                 Current = RoundStateType.StartRound;
                 RollCountText.ChangeText("라운드 시작: 주사위를 굴리세요");
@@ -81,7 +93,10 @@ public class GameSession : Singleton<GameSession>
 
                 while (NOfRoll >= 0)
                 {
+
                     // 스킬 카드 사용가능하게 설정
+                    EnemyManager.Instance.AllEnemyCalculateAttackDamage();
+
                     PlayerInputType playerInput = await WaitForPlayerInput();
                     switch (playerInput)
                     {
@@ -106,10 +121,35 @@ public class GameSession : Singleton<GameSession>
                             continue;
                     }
                 }
-                foreach (Enemy enemy in EnemyManager.Instance.Enemies)
+
+                // 우선권 초기화
+                List<Character> NewAttackOrder = new();
+                NewAttackOrder.Add(Player);
+
+                foreach (var enemy in EnemyManager.Instance.Enemies)
                 {
-                    Player.TakeDamage(enemy.Attack());
+                    NewAttackOrder.Add(enemy);
                 }
+
+                // 우선권대로 행동 실시
+                foreach (Character character in AttackOrder)
+                {
+                    if (character is Player player)
+                    {
+                        PlayerActionList.ForEach((playerAction) =>
+                        {
+                            playerAction.Execute();
+                        });
+                        // player에 대한 작업 수행
+                    }
+                    else if (character is Enemy enemy)
+                    {
+                        Player.TakeDamage(enemy.Attack());
+                    }
+                }
+
+
+
 
                 RollCountText.ChangeText("적은 ___의 데미지를 입었습니다.");
                 if (EnemyManager.Instance.CheckAllDeadEnemy())
@@ -191,13 +231,13 @@ public class GameSession : Singleton<GameSession>
         }
     }
 
-    // OnSkill을 대신 처리해주는 함수
-    public void OnSkillActive<T>(Func<DiceCalculateDto, T, Player, List<Enemy>, bool> onSkillFunction, T target) where T : Character
+    // OnSkill을 저장하는 함수
+    public void OnSkillSave(PlayerAction<Character> playerAction)
     {
         // 스킬을 사용했을 때 액티브
         if (UserInputTaskCompletionSource != null && !UserInputTaskCompletionSource.Task.IsCompleted)
         {
-            bool result = onSkillFunction(Instance.DiceDTO, target, Player, EnemyManager.Instance.Enemies);
+            PlayerActionList.Add(playerAction);
 
             UserInputTaskCompletionSource.SetResult(PlayerInputType.ClickSkill);
         }

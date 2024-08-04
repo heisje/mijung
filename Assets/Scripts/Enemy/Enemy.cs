@@ -5,31 +5,49 @@ public class Enemy : Character, IClickable
 {
     public EnemyStateType EnemyState { get; set; }
     public int Damage { get; set; }
-    public List<int> DamageGraph { get; private set; }
-    public int DamageIndex { get; private set; }
+    public int[] DamageGraph;
 
     // 초기화 메서드
     public void Initialize(int health, int damage)
     {
         Health = health;
         Damage = damage;
+        DamageGraph = new int[] { 3, 4, 5, 6, 7 };
         EnemyState = EnemyStateType.Alive;
-        DamageGraph = new List<int> { 10, 10, 10, 10, 10 };
-        DamageIndex = 0;
         transform.GetComponentInChildren<EnemyHP>().transform.GetComponent<ChangeTMP>().ChangeText(health.ToString());
     }
 
+    // 공격 행동 저장
+    public void CalculateAttackDamage()
+    {
+        int randomIndex = Random.Range(0, DamageGraph.Length);
+        Damage = DamageGraph[randomIndex]; // 적절한 값 할당
+        transform.GetComponentInChildren<EnemyDamage>().transform.GetComponent<ChangeTMP>().ChangeText(Damage.ToString());
+    }
     // 공격 메서드 구현
     public int Attack()
     {
-        return DamageGraph[DamageIndex++ % DamageGraph.Count];
+        return Damage;
     }
 
     // 피해를 입고 죽음 처리
     public override void TakeDamage(int damage)
     {
-        Health -= damage;
-        transform.GetComponentInChildren<EnemyHP>().transform.GetComponent<ChangeTMP>().ChangeText(Health.ToString());
+        AttackOrderValue = 0;
+
+        if (Shield <= damage)
+        {
+            damage -= Shield;
+            Shield = 0;
+            AttackOrderValue = damage;
+            Health -= damage;
+        }
+        else if (Shield > damage)
+        {
+            Shield -= damage;
+        }
+
+        transform.GetComponentInChildren<EnemyHP>().transform.GetComponent<ChangeTMP>().ChangeText("쉴드:" + Shield.ToString() + "체력:" + Health.ToString());
 
         if (Health <= 0)
         {

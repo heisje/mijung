@@ -124,9 +124,6 @@ public class Dice : ClickDragAndDrop
         transform.position = newPosition;
     }
 
-
-
-
     public override void OnDrop(RaycastHit[] hits)
     {
         Vector3 closest = Vector3.zero;

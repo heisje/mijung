@@ -34,6 +34,14 @@ public class EnemyManager : MonoBehaviour
         Enemies.Add(tiger);
     }
 
+    public void AllEnemyCalculateAttackDamage()
+    {
+        foreach (var enemy in Enemies)
+        {
+            enemy.CalculateAttackDamage();
+        }
+    }
+
     public bool CheckAllDeadEnemy()
     {
         foreach (var enemy in Enemies)
