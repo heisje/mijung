@@ -18,8 +18,9 @@ public class SkillCalManager : Singleton<SkillCalManager>
         CheckCombiDict[CombiType.ThreeOfAKind] = (diceDto) => diceDto.SortedCountList[0].Value >= 3;
         CheckCombiDict[CombiType.FourOfAKind] = (diceDto) => diceDto.SortedCountList[0].Value >= 4;
         CheckCombiDict[CombiType.FiveOfAKind] = (diceDto) => diceDto.SortedCountList[0].Value >= 5;
-        CheckCombiDict[CombiType.SmallStraight] = (diceDto) => diceDto.MaxStraightCount >= 4;
-        CheckCombiDict[CombiType.LargeStraight] = (diceDto) => diceDto.MaxStraightCount >= 5;
+        CheckCombiDict[CombiType.ThreeStraight] = (diceDto) => diceDto.MaxStraightCount >= 3;
+        CheckCombiDict[CombiType.FourStraight] = (diceDto) => diceDto.MaxStraightCount >= 4;
+        CheckCombiDict[CombiType.FiveStraight] = (diceDto) => diceDto.MaxStraightCount >= 5;
 
         // 콤비에 따른 LargePip Checker
         CheckLargePip[CombiType.OnePair] = (diceDto) => diceDto.PairLargePips.TryGetValue(2, out int largePip) ? largePip : 0;
@@ -38,8 +39,9 @@ public class SkillCalManager : Singleton<SkillCalManager>
         CheckLargePip[CombiType.ThreeOfAKind] = (diceDto) => diceDto.PairLargePips.TryGetValue(3, out int largePip) ? largePip : 0;
         CheckLargePip[CombiType.FourOfAKind] = (diceDto) => diceDto.PairLargePips.TryGetValue(4, out int largePip) ? largePip : 0;
         CheckLargePip[CombiType.FiveOfAKind] = (diceDto) => diceDto.PairLargePips.TryGetValue(5, out int largePip) ? largePip : 0;
-        CheckLargePip[CombiType.SmallStraight] = (diceDto) => diceDto.StraightLargePips.TryGetValue(4, out int largePip) ? largePip : 0;
-        CheckLargePip[CombiType.LargeStraight] = (diceDto) => diceDto.StraightLargePips.TryGetValue(5, out int largePip) ? largePip : 0;
+        CheckLargePip[CombiType.ThreeStraight] = (diceDto) => diceDto.StraightLargePips.TryGetValue(3, out int largePip) ? largePip : 0;
+        CheckLargePip[CombiType.FourStraight] = (diceDto) => diceDto.StraightLargePips.TryGetValue(4, out int largePip) ? largePip : 0;
+        CheckLargePip[CombiType.FiveStraight] = (diceDto) => diceDto.StraightLargePips.TryGetValue(5, out int largePip) ? largePip : 0;
     }
     public bool CheckCombi(CombiType key, DiceCalculateDto diceDto)
     {

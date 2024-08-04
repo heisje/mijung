@@ -5,8 +5,9 @@ public enum CombiType
     ThreeOfAKind,
     FourOfAKind,
     // FullHouse,
-    SmallStraight,
-    LargeStraight,
+    ThreeStraight,
+    FourStraight,
+    FiveStraight,
     FiveOfAKind,
 
 }

@@ -28,11 +28,23 @@ public class EnemyManager : MonoBehaviour
     // 적 생성
     public void SpawnEnemy()
     {
-        GameObject tigerObject = Instantiate(tigerPrefab, transform);
-        Tiger tiger = tigerObject.GetComponent<Tiger>();
-        tiger.Initialize(150, 20);
-        Enemies.Add(tiger);
+        var position = 0;
+        for (var i = 0; i < 3; i++)
+        {
+            GameObject tigerObject = Instantiate(tigerPrefab, transform);
+            Tiger tiger = tigerObject.GetComponent<Tiger>();
+            tiger.Initialize(150, 20);
+
+            // 현재 위치에서 x축으로 200만큼 이동
+            Vector3 newPosition = tigerObject.transform.position;
+            newPosition.x += position + 30 * i;
+            tigerObject.transform.position = newPosition;
+
+            Enemies.Add(tiger);
+        }
+
     }
+
 
     public void AllEnemyCalculateAttackDamage()
     {
