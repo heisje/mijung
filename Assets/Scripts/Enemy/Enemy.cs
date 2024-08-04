@@ -13,7 +13,7 @@ public class Enemy : Character, IClickable
     {
         HP = hp;
         Damage = damage;
-        DamageGraph = new int[] { 6, 9, 12, 15, 18 };
+        // DamageGraph = new int[] { 6, 9, 12, 15, 18 };
         EnemyState = EnemyStateType.Alive;
     }
 

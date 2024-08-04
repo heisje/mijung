@@ -472,7 +472,7 @@ MonoBehaviour:
   HPDisplay: {fileID: 0}
   ExtraDisplay: {fileID: 0}
   AttackOrderValue: 0
-  DamageGraph: 
+  DamageGraph: 06000000090000000c0000000f00000012000000
 --- !u!65 &7183246815252007301
 BoxCollider:
   m_ObjectHideFlags: 0
