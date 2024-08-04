@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
+using System.Linq;
 
 
 
@@ -66,6 +67,11 @@ public class GameSession : Singleton<GameSession>
             {
                 AttackOrder.Add(enemy);
             }
+            AttackOrder.ForEach((character) =>
+            {
+                character.ResetAttackOrderValue();
+                character.DisplayShieldHP();
+            });
             // -------------------------------------
 
             await MatchPlayerInput(PlayerInputType.ClickSkip);
@@ -85,18 +91,21 @@ public class GameSession : Singleton<GameSession>
                 }
                 NOfRoll = Player.NOfRoll;
 
+                AttackOrder.ForEach((character) =>
+                    {
+                        character.DisplayShieldHP();
+                    });
                 // -------------------------------------
                 await MatchPlayerInput(PlayerInputType.ClickRoll);
 
                 Current = RoundStateType.RollDice;
                 // 주사위 굴림, 주사위 굴릴 수 있음 ------------
 
+                // 스킬 카드 사용가능하게 설정
+                EnemyManager.Instance.AllEnemyCalculateAttackDamage();
+
                 while (NOfRoll >= 0)
                 {
-
-                    // 스킬 카드 사용가능하게 설정
-                    EnemyManager.Instance.AllEnemyCalculateAttackDamage();
-
                     PlayerInputType playerInput = await WaitForPlayerInput();
                     switch (playerInput)
                     {
@@ -130,26 +139,46 @@ public class GameSession : Singleton<GameSession>
                 {
                     NewAttackOrder.Add(enemy);
                 }
+                NewAttackOrder.ForEach((character) =>
+                {
+                    character.ResetAttackOrderValue();
+                });
+
 
                 // 우선권대로 행동 실시
-                foreach (Character character in AttackOrder)
+                for (int index = 0; index < AttackOrder.Count; index++)
                 {
+                    Character character = AttackOrder[index];
+
+                    // TODO: 죽으면 넘기기
+                    character.BeforeAttackOrder = index;
+
+                    // 무너짐 설정
+                    if (character.GetStateCondition(StateConditionType.FellDown) >= 3)
+                    {
+                        character.SetCondition(StateConditionType.FellDown, 0);
+                        continue;
+                    }
+
+                    // 실제 행동
                     if (character is Player player)
                     {
                         PlayerActionList.ForEach((playerAction) =>
                         {
-                            playerAction.Execute();
+                            player.AttackOrderValue += playerAction.Execute();
                         });
-                        // player에 대한 작업 수행
                     }
                     else if (character is Enemy enemy)
                     {
-                        Player.TakeDamage(enemy.Attack());
+                        enemy.AttackOrderValue += Player.TakeDamage(enemy.Attack());
                     }
                 }
 
-
-
+                // AttackOrderValue로 정렬
+                AttackOrder = NewAttackOrder
+                    .OrderByDescending(x => x.AttackOrderValue)
+                    .ThenBy(x => x.BeforeAttackOrder)
+                    .ToList();
 
                 RollCountText.ChangeText("적은 ___의 데미지를 입었습니다.");
                 if (EnemyManager.Instance.CheckAllDeadEnemy())

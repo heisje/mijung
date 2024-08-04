@@ -30,7 +30,7 @@ public class EnemyManager : MonoBehaviour
     {
         GameObject tigerObject = Instantiate(tigerPrefab, transform);
         Tiger tiger = tigerObject.GetComponent<Tiger>();
-        tiger.Initialize(100, 20);
+        tiger.Initialize(150, 20);
         Enemies.Add(tiger);
     }
 

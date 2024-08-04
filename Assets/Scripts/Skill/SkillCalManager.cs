@@ -14,7 +14,7 @@ public class SkillCalManager : Singleton<SkillCalManager>
     {
         // 콤비 체커
         CheckCombiDict[CombiType.OnePair] = (diceDto) => diceDto.SortedCountList[0].Value >= 2;
-        CheckCombiDict[CombiType.TwoPair] = (diceDto) => diceDto.SortedCountList[0].Value >= 2 && diceDto.SortedCountList[1].Value >= 2; ;
+        CheckCombiDict[CombiType.TwoPair] = (diceDto) => diceDto.SortedCountList[0].Value >= 4 || (diceDto.SortedCountList[0].Value >= 2 && diceDto.SortedCountList[1].Value >= 2);
         CheckCombiDict[CombiType.ThreeOfAKind] = (diceDto) => diceDto.SortedCountList[0].Value >= 3;
         CheckCombiDict[CombiType.FourOfAKind] = (diceDto) => diceDto.SortedCountList[0].Value >= 4;
         CheckCombiDict[CombiType.FiveOfAKind] = (diceDto) => diceDto.SortedCountList[0].Value >= 5;
@@ -23,7 +23,18 @@ public class SkillCalManager : Singleton<SkillCalManager>
 
         // 콤비에 따른 LargePip Checker
         CheckLargePip[CombiType.OnePair] = (diceDto) => diceDto.PairLargePips.TryGetValue(2, out int largePip) ? largePip : 0;
-        CheckLargePip[CombiType.TwoPair] = (diceDto) => diceDto.PairLargePips.TryGetValue(2, out int largePip) ? largePip : 0;
+        CheckLargePip[CombiType.TwoPair] = (diceDto) =>
+        {
+            if (diceDto.SortedCountList[0].Value >= 4)
+            {
+                return diceDto.PairLargePips.TryGetValue(4, out int largePip4) ? largePip4 : 0;
+            }
+            if (diceDto.SortedCountList[0].Value >= 2 && diceDto.SortedCountList[1].Value >= 2)
+            {
+                return diceDto.PairLargePips.TryGetValue(2, out int largePip) ? largePip : 0;
+            }
+            return 0;
+        };
         CheckLargePip[CombiType.ThreeOfAKind] = (diceDto) => diceDto.PairLargePips.TryGetValue(3, out int largePip) ? largePip : 0;
         CheckLargePip[CombiType.FourOfAKind] = (diceDto) => diceDto.PairLargePips.TryGetValue(4, out int largePip) ? largePip : 0;
         CheckLargePip[CombiType.FiveOfAKind] = (diceDto) => diceDto.PairLargePips.TryGetValue(5, out int largePip) ? largePip : 0;
@@ -37,8 +48,10 @@ public class SkillCalManager : Singleton<SkillCalManager>
 
     // 타겟에 따른 Check는 다른 함수에서 하고,
     // 스킬을 적중시키는 것만 다룸
-    public virtual bool OnDefinedSkill<T>(Skill skill, DiceCalculateDto diceDto, T target) where T : Character
+    public virtual int OnDefinedSkill<T>(Skill skill, DiceCalculateDto diceDto, T target) where T : Character
     {
+        int takeHealthDamage = 0;
+
         var player = GameSession.Instance.Player;
         var enemies = EnemyManager.Instance.Enemies;
 
@@ -64,7 +77,7 @@ public class SkillCalManager : Singleton<SkillCalManager>
                 }
                 break;
             case ChangerType.LowHp:
-                if (player.Health <= int.Parse(skill.ChangerValue))
+                if (player.HP <= int.Parse(skill.ChangerValue))
                 {
                     isChanger = true;
                 }
@@ -106,12 +119,12 @@ public class SkillCalManager : Singleton<SkillCalManager>
                 {
                     case FormulaType.TargetAttack:
 
-                        target.TakeDamage(value + player.GetStateCondition(StateConditionType.Empower));
+                        takeHealthDamage += target.TakeDamage(value + player.GetStateCondition(StateConditionType.Empower));
                         break;
                     case FormulaType.AllAttack:
                         foreach (var enemy in enemies)
                         {
-                            enemy.TakeDamage(value + player.GetStateCondition(StateConditionType.Empower));
+                            takeHealthDamage += enemy.TakeDamage(value + player.GetStateCondition(StateConditionType.Empower));
                         }
                         break;
                     case FormulaType.PlayerShieldUp:
@@ -121,25 +134,25 @@ public class SkillCalManager : Singleton<SkillCalManager>
                         player.Shield = ChangeMinZero(player.Shield, value);
                         break;
                     case FormulaType.PlayerEmpowerUp:
-                        player.ChangeCondition(StateConditionType.Empower, value);
+                        player.UpdateCondition(StateConditionType.Empower, value);
                         break;
                     case FormulaType.PlayerEmpowerDown:
-                        player.ChangeCondition(StateConditionType.Empower, -value);
+                        player.UpdateCondition(StateConditionType.Empower, -value);
                         break;
                     case FormulaType.PlayerHeal:
-                        player.Health += value;
+                        player.HP += value;
                         break;
                     case FormulaType.TargetMarkUp:
-                        target.ChangeCondition(StateConditionType.Mark, value);
+                        target.UpdateCondition(StateConditionType.Mark, value);
                         break;
                     case FormulaType.TargetMarkDown:
-                        target.ChangeCondition(StateConditionType.Mark, -value);
+                        target.UpdateCondition(StateConditionType.Mark, -value);
                         break;
                 }
             }
         }
 
-        return false;
+        return takeHealthDamage;
     }
     public int EvaluateFormula(string formula)
     {

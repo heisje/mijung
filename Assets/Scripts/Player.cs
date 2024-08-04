@@ -23,9 +23,6 @@ public class Player : Character
     // 스킬카드를 저장해두는 곳. 
     public List<Skill> HaveSkillList = new();
 
-    // Hp 변환용
-    public ChangeTMP ChangeTMP { get; set; }
-
     public int[] GetDiceValues()
     {
         return HaveDices.Select(dice => dice.Value).ToArray();
@@ -39,7 +36,6 @@ public class Player : Character
     {
         return HaveDices.Where(dice => dice.State == DiceState.Keeped).ToArray();
     }
-
 
     public void SelectCharacter(int i)
     {
@@ -59,7 +55,7 @@ public class Player : Character
                 default:
                     break;
             }
-            Health = 100;
+            HP = 150;
 
             initialSkillCardList.ForEach((skillId) =>
             {
@@ -70,29 +66,6 @@ public class Player : Character
         {
             Debug.LogError("캐릭터 선택 실패");
         }
-    }
-
-    public override void TakeDamage(int damage)
-    {
-        AttackOrderValue = 0;
-
-        if (Shield <= damage)
-        {
-            damage -= Shield;
-            Shield = 0;
-            AttackOrderValue = damage;
-            Health -= damage;
-        }
-        else if (Shield > damage)
-        {
-            Shield -= damage;
-        }
-
-        if (ChangeTMP == null)
-        {
-            ChangeTMP = GetComponentInChildren<ChangeTMP>();
-        }
-        ChangeTMP.ChangeText("쉴드:" + Shield.ToString() + "체력:" + Health.ToString());
     }
 
 }

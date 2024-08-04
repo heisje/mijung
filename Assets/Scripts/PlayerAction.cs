@@ -1,20 +1,20 @@
 using System;
 
 [Serializable]
-public class PlayerAction<T>
+public class PlayerAction<T> where T : Character
 {
     public DiceCalculateDto Dice;
     public T Target;
-    private Func<DiceCalculateDto, T, bool> OnSkill;
+    private Func<DiceCalculateDto, T, int> OnSkill;
 
-    public PlayerAction(Func<DiceCalculateDto, T, bool> onSkill, DiceCalculateDto diceDTO, T target)
+    public PlayerAction(Func<DiceCalculateDto, T, int> onSkill, DiceCalculateDto diceDTO, T target)
     {
         OnSkill = onSkill;
         Target = target;
         Dice = diceDTO;
     }
 
-    public bool Execute()
+    public int Execute()
     {
         return OnSkill(Dice, Target);
     }

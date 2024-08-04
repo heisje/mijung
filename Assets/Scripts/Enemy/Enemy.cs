@@ -7,14 +7,14 @@ public class Enemy : Character, IClickable
     public int Damage { get; set; }
     public int[] DamageGraph;
 
+
     // 초기화 메서드
-    public void Initialize(int health, int damage)
+    public void Initialize(int hp, int damage)
     {
-        Health = health;
+        HP = hp;
         Damage = damage;
-        DamageGraph = new int[] { 3, 4, 5, 6, 7 };
+        DamageGraph = new int[] { 6, 9, 12, 15, 18 };
         EnemyState = EnemyStateType.Alive;
-        transform.GetComponentInChildren<EnemyHP>().transform.GetComponent<ChangeTMP>().ChangeText(health.ToString());
     }
 
     // 공격 행동 저장
@@ -30,33 +30,11 @@ public class Enemy : Character, IClickable
         return Damage;
     }
 
-    // 피해를 입고 죽음 처리
-    public override void TakeDamage(int damage)
+    private void CheckDestroy()
     {
-        AttackOrderValue = 0;
-
-        if (Shield <= damage)
-        {
-            damage -= Shield;
-            Shield = 0;
-            AttackOrderValue = damage;
-            Health -= damage;
-        }
-        else if (Shield > damage)
-        {
-            Shield -= damage;
-        }
-
-        transform.GetComponentInChildren<EnemyHP>().transform.GetComponent<ChangeTMP>().ChangeText("쉴드:" + Shield.ToString() + "체력:" + Health.ToString());
-
-        if (Health <= 0)
+        if (HP <= 0)
         {
             EnemyState = EnemyStateType.Dead;
-            Destroy();
-        }
-        else
-        {
-            Debug.Log("Enemy takes " + damage + " damage, remaining health: " + Health);
         }
     }
 
