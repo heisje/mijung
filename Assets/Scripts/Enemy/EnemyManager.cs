@@ -33,7 +33,7 @@ public class EnemyManager : MonoBehaviour
         {
             GameObject tigerObject = Instantiate(tigerPrefab, transform);
             Tiger tiger = tigerObject.GetComponent<Tiger>();
-            tiger.Initialize(150, 20);
+            tiger.Initialize(100, 20);
 
             // 현재 위치에서 x축으로 200만큼 이동
             Vector3 newPosition = tigerObject.transform.position;
