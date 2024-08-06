@@ -9,9 +9,14 @@ public class Character : MonoBehaviour
     public int HP = 0;
     public int Shield = 0;
     public Dictionary<StateConditionType, int> StateCondition = new();
+
+    // UI
     public ChangeTMP ShieldDisplay;
     public ChangeTMP HPDisplay;
     public ChangeTMP ExtraDisplay;
+
+    // 상태
+    public CharacterStateType State { get; set; }
 
     // 우선권 변수
     public int AttackOrderValue = 0;

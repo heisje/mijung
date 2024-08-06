@@ -5,6 +5,7 @@ public class EnemyManager : MonoBehaviour
 {
     public static EnemyManager Instance;
     public GameObject tigerPrefab;
+    public GameObject batPrefab;
     public List<Enemy> Enemies;
 
     private void Awake()
@@ -29,18 +30,23 @@ public class EnemyManager : MonoBehaviour
     public void SpawnEnemy()
     {
         var position = 0;
-        for (var i = 0; i < 3; i++)
+        GameObject tigerObject = Instantiate(tigerPrefab, transform);
+        Tiger tiger = tigerObject.GetComponent<Tiger>();
+        tiger.Initialize(20, 20);
+
+        Enemies.Add(tiger);
+        for (var i = 1; i < 3; i++)
         {
-            GameObject tigerObject = Instantiate(tigerPrefab, transform);
-            Tiger tiger = tigerObject.GetComponent<Tiger>();
-            tiger.Initialize(100, 20);
+            GameObject batObject = Instantiate(batPrefab, transform);
+            Bat bat = batObject.GetComponent<Bat>();
+            bat.Initialize(20, 20);
 
             // 현재 위치에서 x축으로 200만큼 이동
-            Vector3 newPosition = tigerObject.transform.position;
+            Vector3 newPosition = batObject.transform.position;
             newPosition.x += position + 30 * i;
-            tigerObject.transform.position = newPosition;
+            batObject.transform.position = newPosition;
 
-            Enemies.Add(tiger);
+            Enemies.Add(bat);
         }
 
     }
@@ -58,7 +64,11 @@ public class EnemyManager : MonoBehaviour
     {
         foreach (var enemy in Enemies)
         {
-            if (enemy.EnemyState == EnemyStateType.Alive) return false;
+            if (enemy.HP <= 0)
+            {
+                enemy.State = CharacterStateType.Dead;
+            }
+            //if (enemy.EnemyState == EnemyStateType.Alive) return false;
         }
         return true;
     }

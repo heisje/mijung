@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Enemy : Character, IClickable
 {
-    public EnemyStateType EnemyState { get; set; }
+
     public int Damage { get; set; }
     public int[] DamageGraph;
 
@@ -11,10 +11,10 @@ public class Enemy : Character, IClickable
     // 초기화 메서드
     public void Initialize(int hp, int damage)
     {
-        HP = hp;
+        // HP = hp;
         Damage = damage;
         // DamageGraph = new int[] { 6, 9, 12, 15, 18 };
-        EnemyState = EnemyStateType.Alive;
+        State = CharacterStateType.Alive;
     }
 
     // 공격 행동 저장
@@ -34,7 +34,7 @@ public class Enemy : Character, IClickable
     {
         if (HP <= 0)
         {
-            EnemyState = EnemyStateType.Dead;
+            State = CharacterStateType.Dead;
         }
     }
 

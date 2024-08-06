@@ -170,7 +170,14 @@ public class GameSession : Singleton<GameSession>
                     }
                     else if (character is Enemy enemy)
                     {
-                        enemy.AttackOrderValue += Player.TakeDamage(enemy.Attack());
+                        if (enemy.State == CharacterStateType.Dead)
+                        {
+
+                        }
+                        else
+                        {
+                            enemy.AttackOrderValue += Player.TakeDamage(enemy.Attack());
+                        }
                     }
                 }
 
@@ -181,10 +188,10 @@ public class GameSession : Singleton<GameSession>
                     .ToList();
 
                 RollCountText.ChangeText("적은 ___의 데미지를 입었습니다.");
-                if (EnemyManager.Instance.CheckAllDeadEnemy())
-                {
-                    break;
-                }
+                EnemyManager.Instance.CheckAllDeadEnemy();
+                // {
+                //     break;
+                // }
                 // -------------------------------------
             }
 

@@ -1,4 +1,4 @@
-public enum EnemyStateType
+public enum CharacterStateType
 {
     Alive,
     Dead,

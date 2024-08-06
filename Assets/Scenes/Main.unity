@@ -5895,6 +5895,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tigerPrefab: {fileID: 6863676039277350756, guid: e349ae92a5d31437abfe5834c4eed488, type: 3}
+  batPrefab: {fileID: 6863676039277350756, guid: 31444d76385154018a5569e70e2ed215, type: 3}
   Enemies: []
 --- !u!1 &2040473134
 GameObject:
