@@ -3,21 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class DiceManager : MonoBehaviour
+public class DiceManager : Singleton<DiceManager>
 {
-    public static DiceManager Instance;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
     // 계산용 객체 전달
     public DiceCalculateDto Calculate(int[] values)
     {

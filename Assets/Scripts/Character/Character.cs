@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public abstract class Character : MonoBehaviour, ILifeCycle
 {
     public int HP = 0;
     public int Shield = 0;
@@ -16,7 +16,7 @@ public class Character : MonoBehaviour
     public ChangeTMP ExtraDisplay;
 
     // 상태
-    public CharacterStateType State { get; set; }
+    public CharacterStateType State;
 
     // 우선권 변수
     public int AttackOrderValue = 0;
@@ -54,6 +54,16 @@ public class Character : MonoBehaviour
         if (takeHealthDamage >= 10)
         {
             UpdateCondition(StateConditionType.FellDown, 1);
+        }
+
+        if (HP <= 0)
+        {
+            State = CharacterStateType.Dead;
+            if (GetStateCondition(StateConditionType.CanRebirth) >= 1)
+            {
+                State = CharacterStateType.TempDead;
+                SetCondition(StateConditionType.Rebirth, 3);
+            }
         }
         DisplayShieldHP();
         return takeHealthDamage;
@@ -98,10 +108,36 @@ public class Character : MonoBehaviour
         return StateCondition.TryGetValue(stateConditionType, out int value) ? value : 0;
     }
 
-
     public virtual void Act()
     {
 
+    }
+
+    public virtual void BeforeStage() { }
+    public virtual void StartStage() { }
+    public virtual void StartTurn()
+    {
+        StartTurnConditions();
+    }
+    public virtual void EndTurn() { }
+    public virtual void EndStage() { }
+
+    public void StartTurnConditions()
+    {
+        // 부활
+        if (State == CharacterStateType.TempDead && GetStateCondition(StateConditionType.CanRebirth) >= 1 && GetStateCondition(StateConditionType.Rebirth) >= 1)
+        {
+            UpdateCondition(StateConditionType.Rebirth, -1);
+            if (GetStateCondition(StateConditionType.Rebirth) == 0)
+            {
+                State = CharacterStateType.Alive;
+                HP = 10;
+            }
+        }
+    }
+
+    public void EndTurnConditions()
+    {
     }
 }
 

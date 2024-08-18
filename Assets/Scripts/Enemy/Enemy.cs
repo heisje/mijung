@@ -1,51 +1,50 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : Character, IClickable
+public abstract class Enemy : Character, IClickable
 {
-
+    public abstract EnemyType EnemyId { get; set; }
     public int Damage { get; set; }
-    public int[] DamageGraph;
+    public int[] DamageGraph { get; set; }
 
-
-    // 초기화 메서드
-    public void Initialize(int hp, int damage)
+    public override void BeforeStage()
     {
-        // HP = hp;
-        Damage = damage;
-        // DamageGraph = new int[] { 6, 9, 12, 15, 18 };
+        base.BeforeStage();
+        HP = StartDataManager.ENEMY_HP[EnemyId];
+        DamageGraph = StartDataManager.ENEMY_DamageGraph[EnemyId];
+        var MaxFellDown = StartDataManager.ENEMY_MaxFellDown[EnemyId];
+        SetCondition(StateConditionType.MaxFellDown, MaxFellDown);
+    }
+    // 초기화 메서드
+    public override void StartStage()
+    {
+        base.StartStage();
         State = CharacterStateType.Alive;
     }
-
-    // 공격 행동 저장
-    public void CalculateAttackDamage()
+    public override void StartTurn()
     {
+        base.StartTurn();
         int randomIndex = Random.Range(0, DamageGraph.Length);
         Damage = DamageGraph[randomIndex]; // 적절한 값 할당
         transform.GetComponentInChildren<EnemyDamage>().transform.GetComponent<ChangeTMP>().ChangeText(Damage.ToString());
     }
+
+    // 데미지 연산 후 저장
+    public void CalculateAttackDamage()
+    {
+
+    }
+
     // 공격 메서드 구현
     public int Attack()
     {
         return Damage;
     }
 
-    private void CheckDestroy()
-    {
-        if (HP <= 0)
-        {
-            State = CharacterStateType.Dead;
-        }
-    }
-
-    // 오브젝트 삭제
-    private void Destroy()
-    {
-        Destroy(gameObject);
-    }
-
     public void OnClick()
     {
         Debug.Log($"{transform.name} 선택됨");
     }
+
+
 }

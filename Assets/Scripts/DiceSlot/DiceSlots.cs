@@ -1,21 +1,21 @@
-using UnityEngine;
-using System.Collections.Generic;
+// using UnityEngine;
+// using System.Collections.Generic;
 
-public class DiceSlots : MonoBehaviour
-{
-    private List<Transform> diceSlots = new List<Transform>();
+// public class DiceSlots : MonoBehaviour
+// {
+//     private List<Transform> diceSlots = new List<Transform>();
 
-    private void Awake()
-    {
+//     private void Awake()
+//     {
 
-        foreach (Transform slot in transform)
-        {
-            diceSlots.Add(slot);
-        }
-    }
+//         foreach (Transform slot in transform)
+//         {
+//             diceSlots.Add(slot);
+//         }
+//     }
 
-    public List<Transform> GetDiceSlots()
-    {
-        return diceSlots;
-    }
-}
+//     public List<Transform> GetDiceSlots()
+//     {
+//         return diceSlots;
+//     }
+// }

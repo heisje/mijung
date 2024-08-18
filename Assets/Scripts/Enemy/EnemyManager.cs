@@ -1,75 +1,58 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class EnemyManager : MonoBehaviour
+public class EnemyManager : Singleton<EnemyManager>, ILifeCycle
 {
-    public static EnemyManager Instance;
     public GameObject tigerPrefab;
     public GameObject batPrefab;
+    public GameObject DefaultPrefab;
     public List<Enemy> Enemies;
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    // 적 선택
-    public void SelectEnemy()
-    {
-        SpawnEnemy();
-    }
-
-    // 적 생성
-    public void SpawnEnemy()
+    public void BeforeStage()
     {
         var position = 0;
         GameObject tigerObject = Instantiate(tigerPrefab, transform);
         Tiger tiger = tigerObject.GetComponent<Tiger>();
-        tiger.Initialize(20, 20);
-
         Enemies.Add(tiger);
         for (var i = 1; i < 3; i++)
         {
-            GameObject batObject = Instantiate(batPrefab, transform);
-            Bat bat = batObject.GetComponent<Bat>();
-            bat.Initialize(20, 20);
-
+            GameObject ghoulPrefab = Instantiate(DefaultPrefab, transform);
+            Enemy ghoul = ghoulPrefab.AddComponent<Ghoul>();
             // 현재 위치에서 x축으로 200만큼 이동
-            Vector3 newPosition = batObject.transform.position;
-            newPosition.x += position + 30 * i;
-            batObject.transform.position = newPosition;
+            Vector3 newPosition = ghoulPrefab.transform.position;
+            newPosition.x += position + 40 * i;
+            ghoulPrefab.transform.position = newPosition;
 
-            Enemies.Add(bat);
+            Enemies.Add(ghoul);
         }
 
+        Enemies.ForEach((enemy) => { enemy.BeforeStage(); });
     }
-
-
-    public void AllEnemyCalculateAttackDamage()
+    public void StartStage()
     {
-        foreach (var enemy in Enemies)
-        {
-            enemy.CalculateAttackDamage();
-        }
+        Enemies.ForEach((enemy) => { enemy.StartStage(); });
     }
+    public void StartTurn()
+    {
+        Enemies.ForEach((enemy) => { enemy.StartTurn(); });
+    }
+    public void EndTurn()
+    {
+        Enemies.ForEach((enemy) => { enemy.EndTurn(); });
+    }
+    public void EndStage()
+    {
+        Enemies.ForEach((enemy) => { enemy.EndStage(); });
+    }
+
 
     public bool CheckAllDeadEnemy()
     {
         foreach (var enemy in Enemies)
         {
-            if (enemy.HP <= 0)
-            {
-                enemy.State = CharacterStateType.Dead;
-            }
-            //if (enemy.EnemyState == EnemyStateType.Alive) return false;
+            if (enemy.State == CharacterStateType.Alive) return false;
         }
         return true;
     }
+
 }

@@ -54,8 +54,8 @@ public class SkillCalManager : Singleton<SkillCalManager>
     {
         int takeHealthDamage = 0;
 
-        var player = GameSession.Instance.Player;
-        var enemies = EnemyManager.Instance.Enemies;
+        var player = GameSession.Ins.Player;
+        var enemies = EnemyManager.Ins.Enemies;
 
         // 해당하는 것만 바꿀 수 있게 최적화
         var largePip = CheckLargePip[skill.Combi](diceDto);

@@ -466,13 +466,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5121ad32a9beb4458b94fc3232c86378, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 100
+  HP: 130
   Shield: 0
   ShieldDisplay: {fileID: 0}
   HPDisplay: {fileID: 0}
   ExtraDisplay: {fileID: 0}
   AttackOrderValue: 0
-  DamageGraph: 02000000040000000a0000000c000000
+  DamageGraph: 0300000006000000090000000c0000000f00000012000000
 --- !u!65 &7183246815252007301
 BoxCollider:
   m_ObjectHideFlags: 0

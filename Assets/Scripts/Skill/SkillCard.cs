@@ -49,8 +49,8 @@ public class SkillCard : ClickDragAndDrop
                 if (targetEnemy != null)
                 {
                     ChangeTMP.ChangeText("사용됨");
-                    var playerAction = new PlayerAction<Character>(Skill.OnSkill, GameSession.Instance.DiceDTO, targetEnemy);
-                    GameSession.Instance.OnSkillSave(playerAction);
+                    var playerAction = new PlayerAction<Character>(Skill.OnSkill, GameSession.Ins.DiceDTO, targetEnemy);
+                    GameSession.Ins.OnSkillSave(playerAction);
                 }
                 // }
             }

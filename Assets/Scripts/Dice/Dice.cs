@@ -88,7 +88,7 @@ public class Dice : ClickDragAndDrop
         {
             UpdateStat(DiceState.Keeped);
         }
-        GameSession.Instance.OnPlayerInput(PlayerInputType.SelectDice);
+        GameSession.Ins.OnPlayerInput(PlayerInputType.SelectDice);
     }
 
     public override void OnDragStart()

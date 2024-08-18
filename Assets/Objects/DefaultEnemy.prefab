@@ -429,9 +429,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6863676039277350759}
   - component: {fileID: 7183246815252007301}
-  - component: {fileID: 3545452460414855811}
   m_Layer: 0
-  m_Name: Bat
+  m_Name: DefaultEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -467,25 +466,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 40, y: 40, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3545452460414855811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6863676039277350756}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8418d361b40b946b1ad583a051e1bf82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  HP: 30
-  Shield: 0
-  ShieldDisplay: {fileID: 0}
-  HPDisplay: {fileID: 0}
-  ExtraDisplay: {fileID: 0}
-  AttackOrderValue: 0
-  DamageGraph: 010000000200000003000000040000000500000006000000
 --- !u!1 &6863676039833547895
 GameObject:
   m_ObjectHideFlags: 0

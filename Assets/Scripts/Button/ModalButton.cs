@@ -18,6 +18,6 @@ public class ModalButton : MonoBehaviour, IClickable
 
     public void OnClick()
     {
-        ModalManager.Instance.ToggleModal();
+        ModalManager.Ins.ToggleModal();
     }
 }

@@ -1,33 +1,33 @@
-using UnityEngine;
-using System.Collections.Generic;
+// using UnityEngine;
+// using System.Collections.Generic;
 
-public class DiceSlotManager : MonoBehaviour
-{
-    public static DiceSlotManager Instance;
-    private List<Transform> diceSlotGroups = new List<Transform>();
+// public class DiceSlotManager : MonoBehaviour
+// {
+//     public static DiceSlotManager Instance;
+//     private List<Transform> diceSlotGroups = new List<Transform>();
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+//     private void Awake()
+//     {
+//         if (Instance == null)
+//         {
+//             Instance = this;
+//         }
+//         else
+//         {
+//             Destroy(gameObject);
+//         }
+//     }
 
-    private void Start()
-    {
-        foreach (Transform group in transform)
-        {
-            diceSlotGroups.Add(group);
-        }
-    }
+//     private void Start()
+//     {
+//         foreach (Transform group in transform)
+//         {
+//             diceSlotGroups.Add(group);
+//         }
+//     }
 
-    public List<Transform> GetDiceSlotGroups()
-    {
-        return diceSlotGroups;
-    }
-}
+//     public List<Transform> GetDiceSlotGroups()
+//     {
+//         return diceSlotGroups;
+//     }
+// }

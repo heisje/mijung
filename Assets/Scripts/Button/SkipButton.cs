@@ -6,7 +6,7 @@ public class SkipButton : MonoBehaviour, IClickable
 {
     public void OnClick()
     {
-        GameSession.Instance.OnPlayerInput(PlayerInputType.ClickSkip);
+        GameSession.Ins.OnPlayerInput(PlayerInputType.ClickSkip);
     }
 
 }

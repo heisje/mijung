@@ -35,7 +35,7 @@ public class Skill
     public Skill(SkillID id)
     {
         ID = id;
-        SkillData skillData = SkillReaderManager.Instance.GetSkillData(id);
+        SkillData skillData = SkillReaderManager.Ins.GetSkillData(id);
 
         if (skillData == null)
         {
@@ -57,7 +57,7 @@ public class Skill
     // 오로지 주사위로 가능한지 여부 체크
     public virtual bool OnCheck(DiceCalculateDto diceDto)
     {
-        if (SkillCalManager.Instance.CheckCombi(Combi, diceDto))
+        if (SkillCalManager.Ins.CheckCombi(Combi, diceDto))
         {
             IsPossible = true;
         }
@@ -71,7 +71,7 @@ public class Skill
     // 스킬 사용 시 효과
     public virtual int OnSkill<T>(DiceCalculateDto diceDto, T target) where T : Character
     {
-        return SkillCalManager.Instance.OnDefinedSkill<T>(this, diceDto, target);
+        return SkillCalManager.Ins.OnDefinedSkill<T>(this, diceDto, target);
     }
 
     // 현재 상태에 따라 설명 업데이트

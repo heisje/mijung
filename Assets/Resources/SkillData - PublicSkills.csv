@@ -1,12 +1,12 @@
-Code,id,Ko,Description,Custom,조합법,Unique,DefaultCooldown,TargetType,FormulaType1,Formula1,FormulaType2,Formula2,FormulaType3,Formula3,FormulaChanger,Coefficient,FormulaType1,Formula1,FormulaType2,Formula2,FormulaType3,Formula3
+Code,id,Ko,Description,Custom,조합법,Unique,DefaultCooldown,TargetType,FormulaType1,Formula1,FormulaType2,Formula2,FormulaType3,Formula3,FormulaChanger,Value,FormulaType1,Formula1,FormulaType2,Formula2,FormulaType3,Formula3
 TRUE,OnePair,원페어,큰눈 공격,FALSE,OnePair,0,1,EnemySingle,TargetAttack,{largePip},None,,None,,None,,None,,None,,None,
 TRUE,TwoPair,투페어,큰눈 + 3 공격,FALSE,TwoPair,0,1,EnemySingle,TargetAttack,{largePip} + 5,None,,None,,None,,None,,None,,None,
 TRUE,ThreeOfAKind,트리플,큰눈 + 3 방어,FALSE,ThreeOfAKind,0,1,None,PlayerShieldUp,{largePip} + 5,None,,None,,None,,None,,None,,None,
 TRUE,FourOfAKind,포커,큰눈 + 6 공격,FALSE,FourOfAKind,0,1,EnemySingle,TargetAttack,{largePip} + 10,None,,None,,None,,None,,None,,None,
-TRUE,SmallStraight,스몰스트레이트,10,FALSE,FourStraight,0,1,EnemySingle,TargetAttack,15,None,,None,,None,,None,,None,,None,
-TRUE,LargeStraight,라지스트레이트,20,FALSE,FiveStraight,0,1,EnemySingle,TargetAttack,30,None,,None,,None,,None,,None,,None,
-TRUE,FiveOfAKind,야추,30,FALSE,FiveOfAKind,0,1,EnemySingle,TargetAttack,50,None,,None,,None,,None,,None,,None,
-FALSE,,,,FALSE,None,0,1,None,None,,None,,None,,None,,None,,None,,None,
+TRUE,SmallStraight,스몰스트레이트,5,FALSE,ThreeStraight,0,1,EnemySingle,TargetAttack,5,None,,None,,None,,None,,None,,None,
+TRUE,Straight,스트레이트,15,FALSE,FourStraight,0,1,EnemySingle,TargetAttack,15,None,,None,,None,,None,,None,,None,
+TRUE,LargeStraight,라지스트레이트,30,FALSE,FiveStraight,0,1,EnemySingle,TargetAttack,30,None,,None,,None,,None,,None,,None,
+TRUE,FiveOfAKind,야추,50,FALSE,FiveOfAKind,0,1,EnemySingle,TargetAttack,50,None,,None,,None,,None,,None,,None,
 FALSE,,,,FALSE,None,0,1,None,None,,None,,None,,None,,None,,None,,None,
 FALSE,,,,FALSE,None,0,1,None,None,,None,,None,,None,,None,,None,,None,
 FALSE,,,,FALSE,None,0,1,None,None,,None,,None,,None,,None,,None,,None,
