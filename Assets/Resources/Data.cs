@@ -16,7 +16,7 @@ public static class StartDataManager
     public static Dictionary<EnemyType, int> ENEMY_HP = new()
     {
         { EnemyType.Bat, 10 },
-        { EnemyType.Tiger, 150 },
+        { EnemyType.Tiger, 130 },
         { EnemyType.Ghoul, 20 },
     };
 

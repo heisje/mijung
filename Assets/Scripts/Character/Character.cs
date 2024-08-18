@@ -131,7 +131,7 @@ public abstract class Character : MonoBehaviour, ILifeCycle
             if (GetStateCondition(StateConditionType.Rebirth) == 0)
             {
                 State = CharacterStateType.Alive;
-                HP = 10;
+                HP = 1;
             }
         }
     }
