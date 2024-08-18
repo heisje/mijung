@@ -120,7 +120,6 @@ public class SkillCalManager : Singleton<SkillCalManager>
                 switch (formula.Type)
                 {
                     case FormulaType.TargetAttack:
-
                         takeHealthDamage += target.TakeDamage(value + player.GetStateCondition(StateConditionType.Empower));
                         break;
                     case FormulaType.AllAttack:

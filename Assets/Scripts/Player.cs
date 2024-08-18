@@ -65,24 +65,24 @@ public class Player : Character, ILifeCycle
             });
     }
 
-    public void BeforeStage()
+    public override void BeforeStage()
     {
         SetCondition(StateConditionType.MaxFellDown, 3);
     }
 
-    public void StartStage()
+    public override void StartStage()
     {
     }
 
-    public void StartTurn()
+    public override void StartTurn()
     {
     }
 
-    public void EndTurn()
+    public override void EndTurn()
     {
     }
 
-    public void EndStage()
+    public override void EndStage()
     {
     }
 }
