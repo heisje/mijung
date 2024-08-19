@@ -1,7 +1,7 @@
 id,Name,DamageFormula,SkillTargetType,DefaultCooldown
 0,OnePair,3 + {largePip},EnemySingle,1
 1,TwoPair,5 + {largePip},EnemySingle,1
-2,ThreeOfAKind,5 + {largePip},EnemySingle,1
+2,ThreeOfAKind,7 + {largePip},EnemySingle,1
 3,FourOfAKind,10 + {largePip},EnemySingle,1
 4,SmallStraight,15,EnemyAll,1
 5,LargeStraight,30,EnemyAll,1
