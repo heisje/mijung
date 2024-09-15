@@ -9,7 +9,7 @@ public class DiceManager : Singleton<DiceManager>
     public DiceCalculateDto Calculate(int[] values)
     {
         // 조합 결과를 저장할 공간
-        var resultCombinations = new SortedDictionary<CombiType, long> { };
+        var resultCombinations = new SortedDictionary<ECombi, long> { };
 
         // 객체 변경
 

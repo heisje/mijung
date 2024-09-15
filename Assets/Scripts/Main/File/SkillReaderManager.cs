@@ -7,23 +7,23 @@ using System.Linq;
 [Serializable]
 public class SkillData
 {
-    public SkillID ID;
+    public ESkillID ID;
     public string Ko;
     public string Description;
-    public CombiType Combi;
+    public ECombi Combi;
     public int Unique;
     public int DefaultCooldown;
     public SkillTargetType Target;
-    public List<Formula<FormulaType>> FormulaList;
-    public ChangerType Changer;
+    public List<Formula<EFormula>> FormulaList;
+    public EChanger Changer;
     public string ChangerValue;
-    public List<Formula<FormulaType>> ChangerFormulaList;
+    public List<Formula<EFormula>> ChangerFormulaList;
     public CharacterType Character;
 }
 
 public class SkillReaderManager : Singleton<SkillReaderManager>
 {
-    public Dictionary<SkillID, SkillData> SkillDataDict = new();
+    public Dictionary<ESkillID, SkillData> SkillDataDict = new();
     public List<SkillData> SkillDataList = new();
 
     private static readonly string SPLIT_RE = @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))";
@@ -63,17 +63,17 @@ public class SkillReaderManager : Singleton<SkillReaderManager>
 
                 if (values.Length == 0 || values[0] != "TRUE") continue;
 
-                SkillData skillData = new SkillData
+                SkillData skillData = new()
                 {
-                    ID = ParseEnum<SkillID>(values[1], $"SkillID: {values[1]}"),
+                    ID = ParseEnum<ESkillID>(values[1], $"SkillID: {values[1]}"),
                     Ko = values[2],
                     Description = values[3],
-                    Combi = ParseEnum<CombiType>(values[5], $"CombiType: {values[5]}"),
+                    Combi = ParseEnum<ECombi>(values[5], $"CombiType: {values[5]}"),
                     Unique = Convert.ToInt32(values[6]),
                     DefaultCooldown = Convert.ToInt32(values[7]),
                     Target = ParseEnum<SkillTargetType>(values[8], $"SkillTargetType: {values[8]}"),
                     FormulaList = ParseFormulaList(9, values),
-                    Changer = ParseEnum<ChangerType>(values[15], $"ChangerType: {values[15]}"),
+                    Changer = ParseEnum<EChanger>(values[15], $"ChangerType: {values[15]}"),
                     ChangerValue = values[16],
                     ChangerFormulaList = ParseFormulaList(17, values),
                     Character = character
@@ -99,24 +99,24 @@ public class SkillReaderManager : Singleton<SkillReaderManager>
         throw new Exception($"Failed to parse {errorMessage}");
     }
 
-    private List<Formula<FormulaType>> ParseFormulaList(int startIndex, string[] values)
+    private List<Formula<EFormula>> ParseFormulaList(int startIndex, string[] values)
     {
-        var formulaList = new List<Formula<FormulaType>>();
+        var formulaList = new List<Formula<EFormula>>();
         for (int j = 0; j < 3; j++)
         {
             var typeIndex = startIndex + j * 2;
             var valueIndex = typeIndex + 1;
 
-            if (Enum.TryParse(typeof(FormulaType), values[typeIndex], out var formulaType) &&
-                (FormulaType)formulaType != FormulaType.None)
+            if (Enum.TryParse(typeof(EFormula), values[typeIndex], out var formulaType) &&
+                (EFormula)formulaType != EFormula.None)
             {
-                formulaList.Add(new Formula<FormulaType>((FormulaType)formulaType, values[valueIndex]));
+                formulaList.Add(new Formula<EFormula>((EFormula)formulaType, values[valueIndex]));
             }
         }
         return formulaList;
     }
 
-    public SkillData GetSkillData(SkillID id)
+    public SkillData GetSkillData(ESkillID id)
     {
         if (SkillDataDict.TryGetValue(id, out SkillData skillData))
         {

@@ -1,4 +1,4 @@
-public enum StateConditionType
+public enum EStateCondition
 {
     Mark,
     Empower,

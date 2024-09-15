@@ -7,24 +7,24 @@ public class SkillCalManager : Singleton<SkillCalManager>
     public delegate int LargePipHandler(DiceCalculateDto diceDto);    // 람다식 연결용, 매개변수와 리턴값이 중요함
 
     // CSV에 저장된 Type별 행동 방침을 설정
-    protected Dictionary<CombiType, SkillHandler> CheckCombiDict = new();
-    protected Dictionary<CombiType, LargePipHandler> CheckLargePip = new();
-    protected Dictionary<CombiType, SkillHandler> OnDefinedSkillDict = new();
+    protected Dictionary<ECombi, SkillHandler> CheckCombiDict = new();
+    protected Dictionary<ECombi, LargePipHandler> CheckLargePip = new();
+    protected Dictionary<ECombi, SkillHandler> OnDefinedSkillDict = new();
     protected override void Instantiation()
     {
         // 콤비 체커
-        CheckCombiDict[CombiType.OnePair] = (diceDto) => diceDto.SortedCountList[0].Value >= 2;
-        CheckCombiDict[CombiType.TwoPair] = (diceDto) => diceDto.SortedCountList[0].Value >= 4 || (diceDto.SortedCountList[0].Value >= 2 && diceDto.SortedCountList[1].Value >= 2);
-        CheckCombiDict[CombiType.ThreeOfAKind] = (diceDto) => diceDto.SortedCountList[0].Value >= 3;
-        CheckCombiDict[CombiType.FourOfAKind] = (diceDto) => diceDto.SortedCountList[0].Value >= 4;
-        CheckCombiDict[CombiType.FiveOfAKind] = (diceDto) => diceDto.SortedCountList[0].Value >= 5;
-        CheckCombiDict[CombiType.ThreeStraight] = (diceDto) => diceDto.MaxStraightCount >= 3;
-        CheckCombiDict[CombiType.FourStraight] = (diceDto) => diceDto.MaxStraightCount >= 4;
-        CheckCombiDict[CombiType.FiveStraight] = (diceDto) => diceDto.MaxStraightCount >= 5;
+        CheckCombiDict[ECombi.OnePair] = (diceDto) => diceDto.SortedCountList[0].Value >= 2;
+        CheckCombiDict[ECombi.TwoPair] = (diceDto) => diceDto.SortedCountList[0].Value >= 4 || (diceDto.SortedCountList[0].Value >= 2 && diceDto.SortedCountList[1].Value >= 2);
+        CheckCombiDict[ECombi.ThreeOfAKind] = (diceDto) => diceDto.SortedCountList[0].Value >= 3;
+        CheckCombiDict[ECombi.FourOfAKind] = (diceDto) => diceDto.SortedCountList[0].Value >= 4;
+        CheckCombiDict[ECombi.FiveOfAKind] = (diceDto) => diceDto.SortedCountList[0].Value >= 5;
+        CheckCombiDict[ECombi.ThreeStraight] = (diceDto) => diceDto.MaxStraightCount >= 3;
+        CheckCombiDict[ECombi.FourStraight] = (diceDto) => diceDto.MaxStraightCount >= 4;
+        CheckCombiDict[ECombi.FiveStraight] = (diceDto) => diceDto.MaxStraightCount >= 5;
 
         // 콤비에 따른 LargePip Checker
-        CheckLargePip[CombiType.OnePair] = (diceDto) => diceDto.PairLargePips.TryGetValue(2, out int largePip) ? largePip : 0;
-        CheckLargePip[CombiType.TwoPair] = (diceDto) =>
+        CheckLargePip[ECombi.OnePair] = (diceDto) => diceDto.PairLargePips.TryGetValue(2, out int largePip) ? largePip : 0;
+        CheckLargePip[ECombi.TwoPair] = (diceDto) =>
         {
             if (diceDto.SortedCountList[0].Value >= 4)
             {
@@ -36,14 +36,14 @@ public class SkillCalManager : Singleton<SkillCalManager>
             }
             return 0;
         };
-        CheckLargePip[CombiType.ThreeOfAKind] = (diceDto) => diceDto.PairLargePips.TryGetValue(3, out int largePip) ? largePip : 0;
-        CheckLargePip[CombiType.FourOfAKind] = (diceDto) => diceDto.PairLargePips.TryGetValue(4, out int largePip) ? largePip : 0;
-        CheckLargePip[CombiType.FiveOfAKind] = (diceDto) => diceDto.PairLargePips.TryGetValue(5, out int largePip) ? largePip : 0;
-        CheckLargePip[CombiType.ThreeStraight] = (diceDto) => diceDto.StraightLargePips.TryGetValue(3, out int largePip) ? largePip : 0;
-        CheckLargePip[CombiType.FourStraight] = (diceDto) => diceDto.StraightLargePips.TryGetValue(4, out int largePip) ? largePip : 0;
-        CheckLargePip[CombiType.FiveStraight] = (diceDto) => diceDto.StraightLargePips.TryGetValue(5, out int largePip) ? largePip : 0;
+        CheckLargePip[ECombi.ThreeOfAKind] = (diceDto) => diceDto.PairLargePips.TryGetValue(3, out int largePip) ? largePip : 0;
+        CheckLargePip[ECombi.FourOfAKind] = (diceDto) => diceDto.PairLargePips.TryGetValue(4, out int largePip) ? largePip : 0;
+        CheckLargePip[ECombi.FiveOfAKind] = (diceDto) => diceDto.PairLargePips.TryGetValue(5, out int largePip) ? largePip : 0;
+        CheckLargePip[ECombi.ThreeStraight] = (diceDto) => diceDto.StraightLargePips.TryGetValue(3, out int largePip) ? largePip : 0;
+        CheckLargePip[ECombi.FourStraight] = (diceDto) => diceDto.StraightLargePips.TryGetValue(4, out int largePip) ? largePip : 0;
+        CheckLargePip[ECombi.FiveStraight] = (diceDto) => diceDto.StraightLargePips.TryGetValue(5, out int largePip) ? largePip : 0;
     }
-    public bool CheckCombi(CombiType key, DiceCalculateDto diceDto)
+    public bool CheckCombi(ECombi key, DiceCalculateDto diceDto)
     {
         return CheckCombiDict[key](diceDto);
     }
@@ -59,16 +59,16 @@ public class SkillCalManager : Singleton<SkillCalManager>
 
         // 해당하는 것만 바꿀 수 있게 최적화
         var largePip = CheckLargePip[skill.Combi](diceDto);
-        List<KeyValuePair<FormulaType, string>> replaceFormulas = new();
+        List<KeyValuePair<EFormula, string>> replaceFormulas = new();
 
         // 전처리 (텍스트 대치)
         bool isChanger = false;
 
         switch (skill.Changer)
         {
-            case ChangerType.None:
+            case EChanger.None:
                 break;
-            case ChangerType.ContainPip:
+            case EChanger.ContainPip:
                 var pips = skill.ChangerValue.Split(",");
                 foreach (var pip in pips)
                 {
@@ -78,7 +78,7 @@ public class SkillCalManager : Singleton<SkillCalManager>
                     }
                 }
                 break;
-            case ChangerType.LowHp:
+            case EChanger.LowHp:
                 if (player.HP <= int.Parse(skill.ChangerValue))
                 {
                     isChanger = true;
@@ -96,10 +96,10 @@ public class SkillCalManager : Singleton<SkillCalManager>
         // Repeat 선처리
         foreach (var formula in formulas)
         {
-            FormulaType f = formula.Type;
+            EFormula f = formula.Type;
             string s = formula.Value;
-            KeyValuePair<FormulaType, string> replaceKeyPair = new(f, s.Replace("{largePip}", largePip.ToString()));
-            if (f == FormulaType.Repeat)
+            KeyValuePair<EFormula, string> replaceKeyPair = new(f, s.Replace("{largePip}", largePip.ToString()));
+            if (f == EFormula.Repeat)
             {
                 repeatCount = EvaluateFormula(replaceKeyPair.Value);
                 continue;
@@ -112,42 +112,42 @@ public class SkillCalManager : Singleton<SkillCalManager>
         {
             foreach (var formula in formulas) // Formula 순회
             {
-                FormulaType f = formula.Type;
+                EFormula f = formula.Type;
                 string s = formula.Value;
                 string replaceKeyPair = s.Replace("{largePip}", largePip.ToString());
 
                 int value = EvaluateFormula(replaceKeyPair);
                 switch (formula.Type)
                 {
-                    case FormulaType.TargetAttack:
-                        takeHealthDamage += target.TakeDamage(value + player.GetStateCondition(StateConditionType.Empower));
+                    case EFormula.TargetAttack:
+                        takeHealthDamage += target.TakeDamage(value + player.GetStateCondition(EStateCondition.Empower));
                         break;
-                    case FormulaType.AllAttack:
+                    case EFormula.AllAttack:
                         foreach (var enemy in enemies)
                         {
-                            takeHealthDamage += enemy.TakeDamage(value + player.GetStateCondition(StateConditionType.Empower));
+                            takeHealthDamage += enemy.TakeDamage(value + player.GetStateCondition(EStateCondition.Empower));
                         }
                         break;
-                    case FormulaType.PlayerShieldUp:
+                    case EFormula.PlayerShieldUp:
                         player.Shield += value;
                         break;
-                    case FormulaType.PlayerShieldDown:
+                    case EFormula.PlayerShieldDown:
                         player.Shield = ChangeMinZero(player.Shield, value);
                         break;
-                    case FormulaType.PlayerEmpowerUp:
-                        player.UpdateCondition(StateConditionType.Empower, value);
+                    case EFormula.PlayerEmpowerUp:
+                        player.UpdateCondition(EStateCondition.Empower, value);
                         break;
-                    case FormulaType.PlayerEmpowerDown:
-                        player.UpdateCondition(StateConditionType.Empower, -value);
+                    case EFormula.PlayerEmpowerDown:
+                        player.UpdateCondition(EStateCondition.Empower, -value);
                         break;
-                    case FormulaType.PlayerHeal:
+                    case EFormula.PlayerHeal:
                         player.HP += value;
                         break;
-                    case FormulaType.TargetMarkUp:
-                        target.UpdateCondition(StateConditionType.Mark, value);
+                    case EFormula.TargetMarkUp:
+                        target.UpdateCondition(EStateCondition.Mark, value);
                         break;
-                    case FormulaType.TargetMarkDown:
-                        target.UpdateCondition(StateConditionType.Mark, -value);
+                    case EFormula.TargetMarkDown:
+                        target.UpdateCondition(EStateCondition.Mark, -value);
                         break;
                 }
             }

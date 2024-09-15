@@ -5,7 +5,7 @@ public class SkillManager : Singleton<SkillManager>
 {
     public SkillCard SkillCardPrefab; // SkillButton 프리팹을 드래그하여 할당 (static)
 
-    public Skill CreateSkill(SkillID skillID)
+    public Skill CreateSkill(ESkillID skillID)
     {
         try
         {

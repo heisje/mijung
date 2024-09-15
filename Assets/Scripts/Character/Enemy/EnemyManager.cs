@@ -50,7 +50,7 @@ public class EnemyManager : Singleton<EnemyManager>, ILifeCycle
     {
         foreach (var enemy in Enemies)
         {
-            if (enemy.State == CharacterStateType.Alive) return false;
+            if (enemy.State == ECharacterState.Alive) return false;
         }
         return true;
     }

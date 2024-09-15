@@ -1,4 +1,4 @@
-public enum CharacterStateType
+public enum ECharacterState
 {
     Alive,
     Dead,

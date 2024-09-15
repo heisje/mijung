@@ -1,4 +1,4 @@
-public enum ChangerType
+public enum EChanger
 {
     None,
     ContainPip,

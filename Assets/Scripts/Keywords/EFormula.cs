@@ -1,4 +1,4 @@
-public enum FormulaType
+public enum EFormula
 {
     None,
     Custom,

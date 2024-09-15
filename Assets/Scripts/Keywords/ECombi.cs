@@ -1,4 +1,4 @@
-public enum CombiType
+public enum ECombi
 {
     OnePair,
     TwoPair,

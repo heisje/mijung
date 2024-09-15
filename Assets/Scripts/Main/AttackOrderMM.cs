@@ -59,10 +59,10 @@ class AttackOrderMM : Singleton<AttackOrderMM>, ILifeCycle
             character.BeforeAttackOrder = index;
 
             // 무너짐 설정
-            var MaxFellDown = character.GetStateCondition(StateConditionType.MaxFellDown);
-            if (character.GetStateCondition(StateConditionType.FellDown) >= MaxFellDown)
+            var MaxFellDown = character.GetStateCondition(EStateCondition.MaxFellDown);
+            if (character.GetStateCondition(EStateCondition.FellDown) >= MaxFellDown)
             {
-                character.SetCondition(StateConditionType.FellDown, 0);
+                character.SetCondition(EStateCondition.FellDown, 0);
                 continue;
             }
 
@@ -76,7 +76,7 @@ class AttackOrderMM : Singleton<AttackOrderMM>, ILifeCycle
             }
             else if (character is Enemy enemy)
             {
-                if (enemy.State == CharacterStateType.Alive)
+                if (enemy.State == ECharacterState.Alive)
                 {
                     enemy.AttackOrderValue += GameSession.Ins.Player.TakeDamage(enemy.Attack());
                 }

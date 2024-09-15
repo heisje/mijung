@@ -4,7 +4,7 @@ using UnityEngine;
 public class SkillCard : ClickDragAndDrop
 {
     public Skill Skill;
-    public SkillID SkillID;
+    public ESkillID SkillID;
     protected ChangeTMP ChangeTMP;
 
     public override void OnDragStart()

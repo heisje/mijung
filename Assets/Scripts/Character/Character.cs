@@ -8,7 +8,7 @@ public abstract class Character : MonoBehaviour, ILifeCycle
 {
     public int HP = 0;
     public int Shield = 0;
-    public Dictionary<StateConditionType, int> StateCondition = new();
+    public Dictionary<EStateCondition, int> StateCondition = new();
 
     // UI
     public ChangeTMP ShieldDisplay;
@@ -16,7 +16,7 @@ public abstract class Character : MonoBehaviour, ILifeCycle
     public ChangeTMP ExtraDisplay;
 
     // 상태
-    public CharacterStateType State;
+    public ECharacterState State;
 
     // 우선권 변수
     public int AttackOrderValue = 0;
@@ -53,16 +53,16 @@ public abstract class Character : MonoBehaviour, ILifeCycle
 
         if (takeHealthDamage >= 10)
         {
-            UpdateCondition(StateConditionType.FellDown, 1);
+            UpdateCondition(EStateCondition.FellDown, 1);
         }
 
         if (HP <= 0)
         {
-            State = CharacterStateType.Dead;
-            if (GetStateCondition(StateConditionType.CanRebirth) >= 1)
+            State = ECharacterState.Dead;
+            if (GetStateCondition(EStateCondition.CanRebirth) >= 1)
             {
-                State = CharacterStateType.TempDead;
-                SetCondition(StateConditionType.Rebirth, 3);
+                State = ECharacterState.TempDead;
+                SetCondition(EStateCondition.Rebirth, 3);
             }
         }
         DisplayShieldHP();
@@ -86,7 +86,7 @@ public abstract class Character : MonoBehaviour, ILifeCycle
 
 
     // 계산 시 최소값 0을 리턴
-    public void UpdateCondition(StateConditionType stateConditionType, int change)
+    public void UpdateCondition(EStateCondition stateConditionType, int change)
     {
         if (StateCondition.TryGetValue(stateConditionType, out int currentValue))
         {
@@ -98,12 +98,12 @@ public abstract class Character : MonoBehaviour, ILifeCycle
         }
     }
 
-    public void SetCondition(StateConditionType stateConditionType, int value)
+    public void SetCondition(EStateCondition stateConditionType, int value)
     {
         StateCondition[stateConditionType] = Math.Max(0, value);
     }
 
-    public int GetStateCondition(StateConditionType stateConditionType)
+    public int GetStateCondition(EStateCondition stateConditionType)
     {
         return StateCondition.TryGetValue(stateConditionType, out int value) ? value : 0;
     }
@@ -125,12 +125,12 @@ public abstract class Character : MonoBehaviour, ILifeCycle
     public void StartTurnConditions()
     {
         // 부활
-        if (State == CharacterStateType.TempDead && GetStateCondition(StateConditionType.CanRebirth) >= 1 && GetStateCondition(StateConditionType.Rebirth) >= 1)
+        if (State == ECharacterState.TempDead && GetStateCondition(EStateCondition.CanRebirth) >= 1 && GetStateCondition(EStateCondition.Rebirth) >= 1)
         {
-            UpdateCondition(StateConditionType.Rebirth, -1);
-            if (GetStateCondition(StateConditionType.Rebirth) == 0)
+            UpdateCondition(EStateCondition.Rebirth, -1);
+            if (GetStateCondition(EStateCondition.Rebirth) == 0)
             {
-                State = CharacterStateType.Alive;
+                State = ECharacterState.Alive;
                 HP = 1;
             }
         }

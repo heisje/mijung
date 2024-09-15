@@ -9,15 +9,15 @@ using System.Diagnostics;
 public class Skill
 {
     // csv에서 받아오는 데이터 --------------------------------------------
-    public SkillID ID;
+    public ESkillID ID;
     public string Name;     // 스킬 이름
     public string Ko;       // 한글
     public string DefaultDescription;   // 기본 설명 텍스트
-    public CombiType Combi;
+    public ECombi Combi;
     public int Unique;
     public int DefaultCooldown;                 // 기존 쿨타임
     public SkillTargetType SkillTarget;     // 스킬 타겟을 선택하는 종류
-    public List<Formula<FormulaType>> Formulas;
+    public List<Formula<EFormula>> Formulas;
 
     // 추가적인 상태 ------------------------------------------------------
 
@@ -27,12 +27,12 @@ public class Skill
     public bool IsPossible = false;             // 여러 조건으로 인한 스킬 사용가능 여부 판단
 
     // 조건에 따라 효과가 변경되는 경우
-    public ChangerType Changer;
+    public EChanger Changer;
     public string ChangerValue;
-    public List<Formula<FormulaType>> ChangerFormulas;
+    public List<Formula<EFormula>> ChangerFormulas;
 
 
-    public Skill(SkillID id)
+    public Skill(ESkillID id)
     {
         ID = id;
         SkillData skillData = SkillReaderManager.Ins.GetSkillData(id);

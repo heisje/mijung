@@ -10,7 +10,7 @@ public class Player : Character, ILifeCycle
     public Dice[] HaveDices;
     public int NOfRoll = 3; // 최대 굴리기 횟수
     public CharacterType CharacterType;
-    public List<SkillID> initialSkillCardList;
+    public List<ESkillID> initialSkillCardList;
 
     // 스킬카드를 저장해두는 곳. 
     public List<Skill> HaveSkillList = new();
@@ -67,7 +67,7 @@ public class Player : Character, ILifeCycle
 
     public override void BeforeStage()
     {
-        SetCondition(StateConditionType.MaxFellDown, 3);
+        SetCondition(EStateCondition.MaxFellDown, 3);
     }
 
     public override void StartStage()
