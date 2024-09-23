@@ -8,6 +8,6 @@ public class Ghoul : Enemy
     public override void BeforeStage()
     {
         base.BeforeStage();
-        SetCondition(EStateCondition.CanRebirth, 1);
+        SetCondition(ECondition.CanRebirth, 1);
     }
 }

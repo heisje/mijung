@@ -13,13 +13,13 @@ public abstract class Enemy : Character, IClickable
         HP = StartDataManager.ENEMY_HP[EnemyId];
         DamageGraph = StartDataManager.ENEMY_DamageGraph[EnemyId];
         var MaxFellDown = StartDataManager.ENEMY_MaxFellDown[EnemyId];
-        SetCondition(EStateCondition.MaxFellDown, MaxFellDown);
+        SetCondition(ECondition.MaxFellDown, MaxFellDown);
     }
     // 초기화 메서드
     public override void StartStage()
     {
         base.StartStage();
-        State = ECharacterState.Alive;
+        IsAlive = ECharacterState.Alive;
     }
     public override void StartTurn()
     {

@@ -1000,6 +1000,7 @@ Transform:
   - {fileID: 1752922272}
   - {fileID: 548147696}
   - {fileID: 1790639138}
+  - {fileID: 1366926075}
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1196,8 +1197,7 @@ MonoBehaviour:
   - {fileID: 1157335226}
   NOfRoll: 3
   CharacterType: 0
-  initialSkillCardList: 0000000001000000020000000300000004000000050000000600000007000000
-  HaveSkillList: []
+  initSkillCardList: 0000000001000000020000000300000004000000050000000600000007000000
 --- !u!4 &587590454
 Transform:
   m_ObjectHideFlags: 0
@@ -3574,6 +3574,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1323268739}
   m_CullTransparentMesh: 1
+--- !u!1 &1366926074
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1366926075}
+  - component: {fileID: 1366926076}
+  m_Layer: 0
+  m_Name: G_Skill
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1366926075
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366926074}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.35185096, y: 4.79121, z: -45.100006}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 528826293}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1366926076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366926074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81346021e422844428d2fea5f8a8f387, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SkillsInspector: []
 --- !u!1 &1380752178
 GameObject:
   m_ObjectHideFlags: 0
@@ -5176,7 +5221,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3effd88f6e0c349b790bb46de407a2c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SkillDataList: []
 --- !u!1 &1767315255
 GameObject:
   m_ObjectHideFlags: 0

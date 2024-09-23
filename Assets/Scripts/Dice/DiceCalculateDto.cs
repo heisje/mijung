@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 [Serializable]
 public class DiceCalculateDto
@@ -15,7 +16,6 @@ public class DiceCalculateDto
     // Key: Pair의 개수, Value: MaxPip
     public SortedDictionary<int, int> PairLargePips;
     public SortedDictionary<int, int> StraightLargePips;
-
     public DiceCalculateDto(int[] countList, List<KeyValuePair<int, int>> sortedCountList, long sum, SortedDictionary<int, int> pairMaxPips, int maxStraightCount, SortedDictionary<int, int> straightLargePips)
     {
         CountList = countList;
@@ -26,3 +26,4 @@ public class DiceCalculateDto
         StraightLargePips = straightLargePips;
     }
 }
+

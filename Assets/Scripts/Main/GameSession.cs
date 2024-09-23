@@ -1,10 +1,6 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Threading.Tasks;
-using System.Linq;
-
-
 
 public class GameSession : Singleton<GameSession>
 {
@@ -28,9 +24,9 @@ public class GameSession : Singleton<GameSession>
         LifeCycleManager.Ins.Register(AttackOrderMM.Ins);
         LifeCycleManager.Ins.Register(EnemyManager.Ins);
         LifeCycleManager.Ins.Register(Player);
+        // 스테이지 시작
         while (true)
         {
-
             // 메인화면 ------------------------------
             RollCountText.ChangeText("메인화면");
 
@@ -46,19 +42,18 @@ public class GameSession : Singleton<GameSession>
                         new(3, "총사")
                    };
             int i = await SelectManager.Ins.SelectButtonGroup(choiceCharacter, SelectManager.Ins.transform);
-            await CharacterLoader.Ins.LoadCharacterPrefab((CharacterType)i, Player);
+            // await CharacterLoader.Ins.LoadCharacterPrefab((ECharacter)i, Player);
             Player.SelectCharacter(i);
             // -------------------------------------
             await MatchPlayerInput(PlayerInputType.ClickSkip);
 
 
             // 적 선택, 던전 로딩, 카드 로딩 ------------------------------
-
             RollCountText.ChangeText("적 선택");
             LifeCycleManager.Ins.BeforeStage();
 
             SkillManager.Ins.CreatePlayerSkillCard(Player);
-
+            FieldContext fieldContext = new(Player, EnemyManager.Ins.Enemies);
             // 우선권 초기화
 
             // -------------------------------------
@@ -68,7 +63,6 @@ public class GameSession : Singleton<GameSession>
             while (true)
             {
                 LifeCycleManager.Ins.StartTurn();
-
                 SkillManager.Ins.ChangeIsPossibleSkill(Player, false);
 
                 RollCountText.ChangeText("라운드 시작: 적 데미지 ROLL");
@@ -81,7 +75,6 @@ public class GameSession : Singleton<GameSession>
                 NOfRoll = Player.NOfRoll;
 
                 // 공격순서 초기화
-
                 // -------------------------------------
 
                 await MatchPlayerInput(PlayerInputType.ClickRoll);
@@ -89,6 +82,7 @@ public class GameSession : Singleton<GameSession>
                 RollCountText.ChangeText("라운드 시작: 주사위를 굴리세요");
                 while (NOfRoll >= 0)
                 {
+
                     // 유저 입력별 행동
                     PlayerInputType playerInput = await WaitForPlayerInput();
                     if (playerInput == PlayerInputType.ClickSkip)
@@ -102,19 +96,19 @@ public class GameSession : Singleton<GameSession>
                         case PlayerInputType.ClickRoll:
                             RollDices();
                             DiceDTO = DiceManager.Ins.Calculate(Player.GetSelectedDiceValues());
-                            SkillManager.Ins.UpdateSkills(DiceDTO, Player);
+                            SkillManager.Ins.UpdateSkills(DiceDTO, fieldContext);
                             break;
                         case PlayerInputType.SelectDice:
                             DiceDTO = DiceManager.Ins.Calculate(Player.GetSelectedDiceValues());
-                            SkillManager.Ins.UpdateSkills(DiceDTO, Player);
+                            SkillManager.Ins.UpdateSkills(DiceDTO, fieldContext);
                             break;
                         case PlayerInputType.ClickSkill:
+                            DiceDTO = DiceManager.Ins.Calculate(Player.GetSelectedDiceValues());
+                            SkillManager.Ins.UpdateSkills(DiceDTO, fieldContext);
                             foreach (var dice in Player.GetSelectedDice())
                             {
                                 dice.UpdateStat(DiceState.Used);
                             }
-                            DiceDTO = DiceManager.Ins.Calculate(Player.GetSelectedDiceValues());
-                            SkillManager.Ins.UpdateSkills(DiceDTO, Player);
                             break;
                     }
 
@@ -203,7 +197,7 @@ public class GameSession : Singleton<GameSession>
     }
 
     // OnSkill을 저장하는 함수
-    public void OnSkillSave(PlayerAction<Character> playerAction)
+    public void OnSkillSave(PlayerAction playerAction)
     {
         // 스킬을 사용했을 때 액티브
         if (UserInputTaskCompletionSource != null && !UserInputTaskCompletionSource.Task.IsCompleted)
@@ -218,5 +212,4 @@ public class GameSession : Singleton<GameSession>
         UserInputTaskCompletionSource = new TaskCompletionSource<PlayerInputType>();
         return UserInputTaskCompletionSource.Task;
     }
-
 }

@@ -5,7 +5,7 @@ public class SelectButton : ChangeTMP, IClickable
     public int Index;
     public SelectButtonGroup Mother;
 
-    public void Initialization(int i, string text, SelectButtonGroup selectButtonGroup)
+    public void Init(int i, string text, SelectButtonGroup selectButtonGroup)
     {
         Index = i;
         ChangeText(text);

@@ -5,7 +5,7 @@ using System.Linq;
 class AttackOrderMM : Singleton<AttackOrderMM>, ILifeCycle
 {
     public List<Character> AttackOrder { get; set; }
-    public List<PlayerAction<Character>> PlayerActionList { get; set; }
+    public List<PlayerAction> PlayerActionList { get; set; }
 
     public void BeforeStage() { }
 
@@ -59,10 +59,10 @@ class AttackOrderMM : Singleton<AttackOrderMM>, ILifeCycle
             character.BeforeAttackOrder = index;
 
             // 무너짐 설정
-            var MaxFellDown = character.GetStateCondition(EStateCondition.MaxFellDown);
-            if (character.GetStateCondition(EStateCondition.FellDown) >= MaxFellDown)
+            var MaxFellDown = character.GetCondition(ECondition.MaxFellDown);
+            if (character.GetCondition(ECondition.FellDown) >= MaxFellDown)
             {
-                character.SetCondition(EStateCondition.FellDown, 0);
+                character.SetCondition(ECondition.FellDown, 0);
                 continue;
             }
 
@@ -76,7 +76,7 @@ class AttackOrderMM : Singleton<AttackOrderMM>, ILifeCycle
             }
             else if (character is Enemy enemy)
             {
-                if (enemy.State == ECharacterState.Alive)
+                if (enemy.IsAlive == ECharacterState.Alive)
                 {
                     enemy.AttackOrderValue += GameSession.Ins.Player.TakeDamage(enemy.Attack());
                 }

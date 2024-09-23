@@ -2,15 +2,15 @@ using System.Collections.Generic;
 
 public static class StartDataManager
 {
-    public static readonly ESkillID[] PLYER_START_SKILL = {
-        ESkillID.OnePair,
-        ESkillID.TwoPair,
-        ESkillID.ThreeOfAKind,
-        ESkillID.FourOfAKind,
-        ESkillID.SmallStraight,
-        ESkillID.Straight,
-        ESkillID.LargeStraight,
-        ESkillID.FiveOfAKind
+    public static readonly E_Sk_Id[] PLYER_START_SKILL = {
+        E_Sk_Id.OnePair,
+        E_Sk_Id.TwoPair,
+        E_Sk_Id.ThreeOfAKind,
+        E_Sk_Id.FourOfAKind,
+        E_Sk_Id.SmallStraight,
+        E_Sk_Id.Straight,
+        E_Sk_Id.LargeStraight,
+        E_Sk_Id.FiveOfAKind
     };
 
     public static readonly Dictionary<EnemyType, int> ENEMY_HP = new()

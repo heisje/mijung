@@ -14,7 +14,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
                 if (instance == null) // 3
                 {
-                    GameObject obj = new GameObject(typeof(T).Name, typeof(T));
+                    GameObject obj = new(typeof(T).Name, typeof(T));
                     instance = obj.GetComponent<T>();
                 }
             }
@@ -32,11 +32,8 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         {
             DontDestroyOnLoad(this.gameObject); // 4
         }
-        Instantiation();
+        Init();
     }
 
-    protected virtual void Instantiation()
-    {
-
-    }
+    protected virtual void Init() { }
 }

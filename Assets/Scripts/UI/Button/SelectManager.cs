@@ -13,7 +13,7 @@ public class SelectManager : Singleton<SelectManager>
         GameObject emptyObject = Instantiate(EmptyObjectPrefab, targetTransform);
         SelectButtonGroup selectButtonsGroup = emptyObject.AddComponent<SelectButtonGroup>();
 
-        selectButtonsGroup.Initialize(data, SelectButtonPrefab, this);
+        selectButtonsGroup.Init(data, SelectButtonPrefab, this);
 
         return await WaitForUserInput();
     }

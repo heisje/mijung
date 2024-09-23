@@ -5,7 +5,7 @@ public class SelectButtonGroup : MonoBehaviour
 {
     SelectManager Mother;
     List<SelectButton> SelectButtons = new List<SelectButton>();
-    public void Initialize(KeyValuePair<int, string>[] data, GameObject prefab, SelectManager mother)
+    public void Init(KeyValuePair<int, string>[] data, GameObject prefab, SelectManager mother)
     {
         Mother = mother;
         for (var i = 0; i < data.Length; i++)
@@ -17,7 +17,7 @@ public class SelectButtonGroup : MonoBehaviour
             // SelectButtonObject.transform.localPosition = newPosition;
 
             SelectButton SelectButton = SelectButtonObject.AddComponent<SelectButton>();
-            SelectButton.Initialization(data[i].Key, data[i].Value, this);
+            SelectButton.Init(data[i].Key, data[i].Value, this);
 
             SelectButtons.Add(SelectButton);
         }

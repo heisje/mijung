@@ -5,15 +5,16 @@ using System.Linq;
 using UnityEditor.PackageManager;
 using UnityEngine;
 
-public class Player : Character, ILifeCycle
+public class Player : Character
 {
     public Dice[] HaveDices;
     public int NOfRoll = 3; // 최대 굴리기 횟수
-    public CharacterType CharacterType;
-    public List<ESkillID> initialSkillCardList;
+    public ECharacter CharacterType;
+    public Sk_StartPack SkillStartPack;
 
     // 스킬카드를 저장해두는 곳. 
-    public List<Skill> HaveSkillList = new();
+    [SerializeField]
+    public List<Skill> HaveSkillList;
 
     public int[] GetDiceValues()
     {
@@ -32,18 +33,18 @@ public class Player : Character, ILifeCycle
     // 캐릭터를 선택 할 때 캐릭터의 스킬을 초기화한다.
     public void SelectCharacter(int i)
     {
-        if (Enum.TryParse(i.ToString(), out CharacterType characterType))
+        if (Enum.TryParse(i.ToString(), out ECharacter characterType))
         {
             switch (characterType)
             {
-                case CharacterType.Swordsman:
-                    CharacterType = CharacterType.Swordsman;
+                case ECharacter.SwordMan:
+                    CharacterType = ECharacter.SwordMan;
                     break;
-                case CharacterType.Spirit:
-                    CharacterType = CharacterType.Spirit;
+                case ECharacter.Spirit:
+                    CharacterType = ECharacter.Spirit;
                     break;
-                case CharacterType.Gunner:
-                    CharacterType = CharacterType.Gunner;
+                case ECharacter.Gunner:
+                    CharacterType = ECharacter.Gunner;
                     break;
                 default:
                     break;
@@ -59,7 +60,8 @@ public class Player : Character, ILifeCycle
     // 스킬 초기화
     public void SkillInit()
     {
-        initialSkillCardList.ForEach((skillId) =>
+        HaveSkillList = new();
+        SkillStartPack.IDs.ForEach((skillId) =>
             {
                 HaveSkillList.Add(SkillManager.Ins.CreateSkill(skillId));
             });
@@ -67,22 +69,11 @@ public class Player : Character, ILifeCycle
 
     public override void BeforeStage()
     {
-        SetCondition(EStateCondition.MaxFellDown, 3);
+        SetCondition(ECondition.MaxFellDown, 3);
     }
 
-    public override void StartStage()
+    public List<Skill> GetHaveSkillList()
     {
-    }
-
-    public override void StartTurn()
-    {
-    }
-
-    public override void EndTurn()
-    {
-    }
-
-    public override void EndStage()
-    {
+        return HaveSkillList;
     }
 }

@@ -7,19 +7,19 @@ public class CharacterLoader : Singleton<CharacterLoader>
     public GameObject swordsmanPrefab;
     public GameObject spiritPrefab;
     public GameObject gunnerPrefab;
-    private Dictionary<CharacterType, GameObject> characterPrefabDictionary;
+    private Dictionary<ECharacter, GameObject> characterPrefabDictionary;
 
-    protected override void Instantiation()
+    protected override void Init()
     {
-        characterPrefabDictionary = new Dictionary<CharacterType, GameObject>
+        characterPrefabDictionary = new Dictionary<ECharacter, GameObject>
         {
-            { CharacterType.Swordsman, swordsmanPrefab },
-            { CharacterType.Spirit, spiritPrefab },
-            { CharacterType.Gunner, gunnerPrefab }
+            { ECharacter.SwordMan, swordsmanPrefab },
+            { ECharacter.Spirit, spiritPrefab },
+            { ECharacter.Gunner, gunnerPrefab }
         };
     }
 
-    public async Task<GameObject> LoadCharacterPrefab(CharacterType characterType, Player player)
+    public async Task<GameObject> LoadCharacterPrefab(ECharacter characterType, Player player)
     {
         if (characterPrefabDictionary.TryGetValue(characterType, out GameObject prefab))
         {

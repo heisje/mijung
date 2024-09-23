@@ -1,21 +1,23 @@
 using System;
 
-[Serializable]
-public class PlayerAction<T> where T : Character
-{
-    public DiceCalculateDto Dice;
-    public T Target;
-    private Func<DiceCalculateDto, T, int> OnSkill;
 
-    public PlayerAction(Func<DiceCalculateDto, T, int> onSkill, DiceCalculateDto diceDTO, T target)
+
+[Serializable]
+public class PlayerAction
+{
+    public Sk_Context FieldActionContext;
+    public DiceCalculateDto Dice;
+    private readonly Func<DiceCalculateDto, Sk_Context, int> OnSkill;
+
+    public PlayerAction(Func<DiceCalculateDto, Sk_Context, int> onSkill, DiceCalculateDto diceDTO, Sk_Context fieldActionContext)
     {
         OnSkill = onSkill;
-        Target = target;
         Dice = diceDTO;
+        FieldActionContext = fieldActionContext;
     }
 
     public int Execute()
     {
-        return OnSkill(Dice, Target);
+        return OnSkill(Dice, FieldActionContext);
     }
 }
