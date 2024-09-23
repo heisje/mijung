@@ -14,7 +14,7 @@ public class EnemyManager : Singleton<EnemyManager>, ILifeCycle
         GameObject tigerObject = Instantiate(tigerPrefab, transform);
         Tiger tiger = tigerObject.GetComponent<Tiger>();
         Enemies.Add(tiger);
-        for (var i = 1; i < 2; i++)
+        for (var i = 1; i < 3; i++)
         {
             GameObject ghoulPrefab = Instantiate(DefaultPrefab, transform);
             Enemy ghoul = ghoulPrefab.AddComponent<Ghoul>();

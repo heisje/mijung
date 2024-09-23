@@ -1,5 +1,5 @@
 using System.Linq;
 
-class S3_09
+public class S3_09
 {
 }

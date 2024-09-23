@@ -5,7 +5,7 @@ using System;
 [Serializable]
 public class PlayerAction
 {
-    public Sk_Context FieldActionContext;
+    public Sk_Context Context;
     public DiceCalculateDto Dice;
     private readonly Func<DiceCalculateDto, Sk_Context, int> OnSkill;
 
@@ -13,11 +13,23 @@ public class PlayerAction
     {
         OnSkill = onSkill;
         Dice = diceDTO;
-        FieldActionContext = fieldActionContext;
+        Context = fieldActionContext;
     }
 
     public int Execute()
     {
-        return OnSkill(Dice, FieldActionContext);
+        if (Dice.IsContainPip(6))
+        {
+            Context.Enemies.ForEach(e =>
+                    {
+                        var hurt = e.GetCondition(ECondition.Hurt);
+                        for (var i = 0; i < hurt; i++)
+                        {
+                            Context.Player.Attack(e, 5);
+                        }
+                        e.SetCondition(ECondition.Hurt, 0);
+                    });
+        }
+        return OnSkill(Dice, Context);
     }
 }

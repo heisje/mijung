@@ -1,1 +1,1 @@
-class S4_11 { }
+public class S4_11 { }

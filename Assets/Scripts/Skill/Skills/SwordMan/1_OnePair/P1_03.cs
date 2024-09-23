@@ -14,7 +14,7 @@ public class P1_03 : Rage
         int empower = resolved[2];
 
         var hpDamage = c.Player.Attack(c.Target, damage);
-        c.Player.HP -= damageSelf;
+        c.Player.TakeDamage(damageSelf);
         c.Player.UpdateCondition(ECondition.Empowerment, empower);
         return hpDamage;
     }
@@ -26,7 +26,7 @@ public class P1_03 : Rage
         int damageSelf = resolved[1];
 
         var hpDamage = c.Player.Attack(c.Target, damage);
-        c.Player.HP -= damageSelf;
+        c.Player.TakeDamage(damageSelf);
         return hpDamage;
     }
 }

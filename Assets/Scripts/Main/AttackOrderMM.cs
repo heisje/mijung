@@ -63,6 +63,7 @@ class AttackOrderMM : Singleton<AttackOrderMM>, ILifeCycle
             if (character.GetCondition(ECondition.FellDown) >= MaxFellDown)
             {
                 character.SetCondition(ECondition.FellDown, 0);
+                character.SetCondition(ECondition.Empowerment, 0);
                 continue;
             }
 

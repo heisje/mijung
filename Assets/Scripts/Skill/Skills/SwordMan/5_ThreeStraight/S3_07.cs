@@ -1,1 +1,1 @@
-class S3_07 { }
+public class S3_07 { }
