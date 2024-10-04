@@ -13,6 +13,7 @@ public class EnemyManager : Singleton<EnemyManager>, ILifeCycle
         var position = 0;
         GameObject tigerObject = Instantiate(tigerPrefab, transform);
         Tiger tiger = tigerObject.GetComponent<Tiger>();
+        tiger.name = $"짱쎈몹";
         Enemies.Add(tiger);
         for (var i = 1; i < 3; i++)
         {
@@ -22,7 +23,7 @@ public class EnemyManager : Singleton<EnemyManager>, ILifeCycle
             Vector3 newPosition = ghoulPrefab.transform.position;
             newPosition.x += position + 40 * i;
             ghoulPrefab.transform.position = newPosition;
-
+            ghoul.name = $"잡몹{i}";
             Enemies.Add(ghoul);
         }
 

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SkillCard : ClickDragAndDrop
 {
@@ -21,14 +22,33 @@ public class SkillCard : ClickDragAndDrop
         if (Skill.IsPossible)
         {
             IsDragAndDropPossible = true;
-            string isPossible = $"{(Skill.IsPossible ? 'O' : 'X')}, {(Skill.IsChanged ? 'O' : 'X')}";
+            string isPossible = $"    {(Skill.IsPossible ? "<color=#0000FF><size=150%>O</size></color>" : "<color=#FF0000>X</color>")}, {(Skill.IsChanged ? "<color=#FF0000>바뀜</color>" : "")}";
             UpdateText(Skill.ID + isPossible + "\n" + Skill.Description);
         }
         else
         {
             IsDragAndDropPossible = false;
-            string isPossible = $"{(Skill.IsPossible ? 'O' : 'X')}, {(Skill.IsChanged ? 'O' : 'X')}";
+            string isPossible = $"    {(Skill.IsPossible ? "<color=#0000FF><size=150%>O</size></color>" : "<color=#FF0000>X</color>")}, {(Skill.IsChanged ? "<color=#FF0000>바뀜</color>" : "")}";
             UpdateText(Skill.ID + isPossible + "\n" + Skill.Description);
+        }
+
+        // 오브젝트가 존재하는지 확인하고, Button 컴포넌트를 가져옵니다.
+        Button myButton = GetComponentInChildren<Button>();
+
+        if (myButton != null)
+        {
+            // 현재 버튼의 ColorBlock을 가져옵니다.
+            ColorBlock colorBlock = myButton.colors;
+
+            // Normal Color를 원하는 색상으로 변경합니다. 예시로 파란색을 사용했습니다.
+            colorBlock.normalColor = Skill.IsGlobalPossible ? Color.green : Color.white;
+
+            // 변경된 ColorBlock을 버튼에 다시 할당합니다.
+            myButton.colors = colorBlock;
+        }
+        else
+        {
+            Debug.LogError("Button 컴포넌트를 찾을 수 없습니다.");
         }
     }
 

@@ -17,7 +17,7 @@ public abstract class Rage : Skill
     public virtual bool IsCheckChange(DiceCalculateDto diceDto, Sk_Context c)
     {
         var TurnDamaged = c.Player.GetCondition(ECondition.TakeHP) + c.Player.GetCondition(ECondition.TakeShield);
-        if (TurnDamaged >= 15) return true;
+        if (TurnDamaged >= GLOBAL_CONST.RAGE_DAMAGE) return true;
         return false;
     }
     public abstract int OnDefaultSkill(DiceCalculateDto diceDto, Sk_Context c);

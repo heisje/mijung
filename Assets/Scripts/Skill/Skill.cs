@@ -30,6 +30,7 @@ public abstract class Skill : ISkill
     public string Description;          // 상태가 변경된 텍스트
     public int CurrentCooldown = 0;            // 상태저장 쿨타임
     public bool IsPossible = false;     // 여러 조건으로 인한 스킬 사용가능 여부 판단
+    public bool IsGlobalPossible = false;     // 여러 조건으로 인한 스킬 사용가능 여부 판단
     public bool IsChanged = false;      // 발동 이벤트
     // --------------------------
 
@@ -57,6 +58,18 @@ public abstract class Skill : ISkill
     public virtual bool OnCheck(DiceCalculateDto diceDto, FieldContext fieldContext)
     {
         return diceDto.GetIsCombi(Combi);
+    }
+
+    public void OnGlobalCheck(DiceCalculateDto diceDto)
+    {
+        if (diceDto.GetIsCombi(Combi))
+        {
+            this.IsGlobalPossible = true;
+        }
+        else
+        {
+            this.IsGlobalPossible = false;
+        }
     }
 
     // 스킬 사용 시 효과. 핵심

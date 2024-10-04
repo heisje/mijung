@@ -34,4 +34,10 @@ public static class StartDataManager
         { EnemyType.Ghoul, 1 },
     };
 
+
+}
+
+public static class GLOBAL_CONST
+{
+    public const int RAGE_DAMAGE = 10;
 }

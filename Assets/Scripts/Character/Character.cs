@@ -93,9 +93,21 @@ public abstract class Character : MonoBehaviour, ILifeCycle
 
         foreach (var state in Condition)
         {
-            extraText.AppendLine($"{state.Key}: {state.Value}");
+            switch (state.Key)
+            {
+                case ECondition.TakeHP:
+                case ECondition.TakeShield:
+                case ECondition.TurnDamageHP:
+                case ECondition.TurnDamageShield:
+                case ECondition.MaxHp:
+                case ECondition.HP:
+                case ECondition.Shield:
+                    break;
+                default:
+                    extraText.AppendLine($"{state.Key}: {state.Value}");
+                    break;
+            }
         }
-
         ExtraDisplay.ChangeText(extraText.ToString());
     }
 

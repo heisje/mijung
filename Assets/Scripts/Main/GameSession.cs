@@ -90,21 +90,21 @@ public class GameSession : Singleton<GameSession>
                         LifeCycleManager.Ins.EndTurn();
                         break;
                     }
-
+                    var AllDiceDTO = DiceManager.Ins.Calculate(Player.GetAllDiceValues());
                     switch (playerInput)
                     {
                         case PlayerInputType.ClickRoll:
                             RollDices();
                             DiceDTO = DiceManager.Ins.Calculate(Player.GetSelectedDiceValues());
-                            SkillManager.Ins.UpdateSkills(DiceDTO, fieldContext);
+                            SkillManager.Ins.UpdateSkills(AllDiceDTO, DiceDTO, fieldContext);
                             break;
                         case PlayerInputType.SelectDice:
                             DiceDTO = DiceManager.Ins.Calculate(Player.GetSelectedDiceValues());
-                            SkillManager.Ins.UpdateSkills(DiceDTO, fieldContext);
+                            SkillManager.Ins.UpdateSkills(AllDiceDTO, DiceDTO, fieldContext);
                             break;
                         case PlayerInputType.ClickSkill:
                             DiceDTO = DiceManager.Ins.Calculate(Player.GetSelectedDiceValues());
-                            SkillManager.Ins.UpdateSkills(DiceDTO, fieldContext);
+                            SkillManager.Ins.UpdateSkills(AllDiceDTO, DiceDTO, fieldContext);
                             foreach (var dice in Player.GetSelectedDice())
                             {
                                 dice.UpdateStat(DiceState.Used);

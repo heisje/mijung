@@ -25,6 +25,11 @@ public class Player : Character
     {
         return HaveDices.Where(dice => dice.State == DiceState.Keeped).Select(dice => dice.Value).ToArray();
     }
+
+    public int[] GetAllDiceValues()
+    {
+        return HaveDices.Select(dice => dice.Value).ToArray();
+    }
     public Dice[] GetSelectedDice()
     {
         return HaveDices.Where(dice => dice.State == DiceState.Keeped).ToArray();

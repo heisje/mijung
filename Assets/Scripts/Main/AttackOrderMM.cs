@@ -1,12 +1,14 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using UnityEngine;
 
 class AttackOrderMM : Singleton<AttackOrderMM>, ILifeCycle
 {
     public List<Character> AttackOrder { get; set; }
     public List<PlayerAction> PlayerActionList { get; set; }
-
+    public ChangeTMP AttackOrderTMP;
     public void BeforeStage() { }
 
     public void StartStage()
@@ -88,6 +90,14 @@ class AttackOrderMM : Singleton<AttackOrderMM>, ILifeCycle
                     .OrderByDescending(x => x.AttackOrderValue)
                     .ThenBy(x => x.BeforeAttackOrder)
                     .ToList();
+
+        var txt = new StringBuilder();
+        foreach (var ch in AttackOrder)
+        {
+            txt.Append(ch.name + " ");
+        }
+
+        AttackOrderTMP.ChangeText(txt.ToString());
     }
 
     public void EndTurn() { }
