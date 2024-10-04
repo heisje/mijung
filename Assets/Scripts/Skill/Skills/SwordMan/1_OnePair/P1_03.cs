@@ -10,11 +10,9 @@ public class P1_03 : Rage
     {
         var resolved = this.EvaluateFormulas(diceDto);
         int damage = resolved[0];
-        int damageSelf = resolved[1];
-        int empower = resolved[2];
+        int empower = resolved[1];
 
         var hpDamage = c.Player.Attack(c.Target, damage);
-        c.Player.TakeDamage(damageSelf);
         c.Player.UpdateCondition(ECondition.Empowerment, empower);
         return hpDamage;
     }
@@ -23,10 +21,8 @@ public class P1_03 : Rage
     {
         var resolved = this.EvaluateFormulas(diceDto);
         int damage = resolved[0];
-        int damageSelf = resolved[1];
 
         var hpDamage = c.Player.Attack(c.Target, damage);
-        c.Player.TakeDamage(damageSelf);
         return hpDamage;
     }
 }

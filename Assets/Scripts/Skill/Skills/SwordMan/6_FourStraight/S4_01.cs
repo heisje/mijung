@@ -9,15 +9,16 @@ public class S4_01 : Skill
         var resolved = this.EvaluateFormulas(diceDto);
         int v0 = resolved[0];
         int result = 0;
-        if (diceDto.IsContainPip(5))
-        {
-            result += c.Player.Attack(c.Target, v0);
-            result += c.Player.Attack(c.Target, v0);
-        }
+
 
         if (diceDto.IsContainPip(6))
         {
             result += c.Player.Attack(c.Target, v0);
+            result += c.Player.Attack(c.Target, v0);
+            result += c.Player.Attack(c.Target, v0);
+        }
+        else if (diceDto.IsContainPip(5))
+        {
             result += c.Player.Attack(c.Target, v0);
             result += c.Player.Attack(c.Target, v0);
         }
