@@ -12,7 +12,7 @@ public class PlayerAction
     public PlayerAction(Func<DiceCalculateDto, Sk_Context, int> onSkill, DiceCalculateDto diceDTO, Sk_Context fieldActionContext)
     {
         OnSkill = onSkill;
-        Dice = diceDTO;
+        Dice = diceDTO ?? throw new Exception("DTO 다시봐라");
         Context = fieldActionContext;
     }
 
