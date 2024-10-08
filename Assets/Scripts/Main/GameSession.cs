@@ -10,10 +10,9 @@ public class GameSession : Singleton<GameSession>
     public RoundStateType RoundCurrentState = RoundStateType.DevGo;
     public RoundStateType RoundPreviousState = RoundStateType.DevGo;
     public int NOfRoll = 0;    // 게임 라운드 횟수 저장
-    public DiceCalculateDto DiceDTO;
-    public DiceCalculateDto SelectedDiceDTO;
     public PlayerInputType PlayerInput;
-
+    public Func<DiceCalculateDto, Sk_Context, int> SelectedOnSkill;
+    public Character SelectedTarget;
     void Start()
     {
         Round();
@@ -87,24 +86,24 @@ public class GameSession : Singleton<GameSession>
                     PlayerInputType playerInput = await WaitForPlayerInput();
                     if (playerInput == PlayerInputType.ClickSkip)
                     {
-                        LifeCycleManager.Ins.EndTurn();
                         break;
                     }
-                    var AllDiceDTO = DiceManager.Ins.Calculate(Player.GetAllDiceValues());
+                    var allDiceDTO = DiceManager.Ins.Calculate(Player.GetAllDiceValues());
+                    var selectedDiceDTO = DiceManager.Ins.Calculate(Player.GetSelectedDiceValues());
                     switch (playerInput)
                     {
                         case PlayerInputType.ClickRoll:
                             RollDices();
-                            DiceDTO = DiceManager.Ins.Calculate(Player.GetSelectedDiceValues());
-                            SkillManager.Ins.UpdateSkills(AllDiceDTO, DiceDTO, fieldContext);
+                            SkillManager.Ins.UpdateSkills(allDiceDTO, selectedDiceDTO, fieldContext);
                             break;
                         case PlayerInputType.SelectDice:
-                            DiceDTO = DiceManager.Ins.Calculate(Player.GetSelectedDiceValues());
-                            SkillManager.Ins.UpdateSkills(AllDiceDTO, DiceDTO, fieldContext);
+                            SkillManager.Ins.UpdateSkills(allDiceDTO, selectedDiceDTO, fieldContext);
                             break;
                         case PlayerInputType.ClickSkill:
-                            DiceDTO = DiceManager.Ins.Calculate(Player.GetSelectedDiceValues());
-                            SkillManager.Ins.UpdateSkills(AllDiceDTO, DiceDTO, fieldContext);
+                            var playerAction = new PlayerAction(SelectedOnSkill, selectedDiceDTO, new Sk_Context(SelectedTarget));
+                            AttackOrderMM.Ins.PlayerActionList.Add(playerAction);
+
+                            SkillManager.Ins.UpdateSkills(allDiceDTO, selectedDiceDTO, fieldContext);
                             foreach (var dice in Player.GetSelectedDice())
                             {
                                 dice.UpdateStat(DiceState.Used);
@@ -197,12 +196,14 @@ public class GameSession : Singleton<GameSession>
     }
 
     // OnSkill을 저장하는 함수
-    public void OnSkillSave(PlayerAction playerAction)
+    public void OnSkillSave(Func<DiceCalculateDto, Sk_Context, int> onSkill, Character target) // PlayerAction playerAction)
     {
         // 스킬을 사용했을 때 액티브
         if (UserInputTaskCompletionSource != null && !UserInputTaskCompletionSource.Task.IsCompleted)
         {
-            AttackOrderMM.Ins.PlayerActionList.Add(playerAction);
+            // TODO: 묶어주기
+            SelectedOnSkill = onSkill;
+            SelectedTarget = target;
             UserInputTaskCompletionSource.SetResult(PlayerInputType.ClickSkill);
         }
     }

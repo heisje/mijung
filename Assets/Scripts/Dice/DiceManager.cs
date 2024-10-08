@@ -12,14 +12,21 @@ public class DiceManager : Singleton<DiceManager>
         var resultCombinations = new SortedDictionary<ECombi, long> { };
 
         // 객체 변경
-
+        // TODO: 6이상 되도록
         int[] countList = new int[Math.Max(7, 6 + 1)];
         Array.Clear(countList, 0, countList.Length);
-        List<KeyValuePair<int, int>> sortedCountList;
-        for (int i = 0; i < countList.Length; i++)
+
+        // for (int i = 0; i < countList.Length; i++)
+        // {
+        //     countList[i] = values.Count(v => v == i);
+        // }
+
+        foreach (var value in values)
         {
-            countList[i] = values.Count(v => v == i);
+            countList[value] += 1;
         }
+
+        List<KeyValuePair<int, int>> sortedCountList;
         sortedCountList = countList
             .Select((count, index) => new KeyValuePair<int, int>(index, count))
             .OrderByDescending(item => item.Value)

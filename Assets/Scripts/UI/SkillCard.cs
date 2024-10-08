@@ -62,14 +62,15 @@ public class SkillCard : ClickDragAndDrop
             {
                 // if (Skill.SkillTarget == SkillTargetType.EnemySingle)
                 // {
-                Enemy targetEnemy = GetHitComponent<Enemy>(hit);
+                Character target = GetHitComponent<Character>(hit);
 
                 // 사용이 가능한 지점
-                if (targetEnemy != null)
+                if (target != null)
                 {
                     ChangeTMP.ChangeText("사용됨");
-                    var playerAction = new PlayerAction(Skill.OnSkill, GameSession.Ins.DiceDTO, new Sk_Context(targetEnemy));
-                    GameSession.Ins.OnSkillSave(playerAction);
+
+
+                    GameSession.Ins.OnSkillSave(Skill.OnSkill, target);
                 }
                 // }
             }

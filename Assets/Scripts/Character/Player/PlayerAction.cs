@@ -20,7 +20,6 @@ public class PlayerAction
     {
         if (Dice.IsContainPip(6))
         {
-
             Context.Enemies.ForEach(e =>
                     {
                         var hurt = e.GetCondition(ECondition.Hurt);

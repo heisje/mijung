@@ -14,7 +14,6 @@ public class S3_04 : Skill
         var ec = c.Enemies.Count();
 
         c.Player.TakeDamage(v0);
-        c.Player.TakeDamage(v0);
         c.Player.UpdateCondition(ECondition.Empowerment, ec);
         return 0;
     }

@@ -49,6 +49,12 @@ public static class DiceUtils
         return CheckLargePipDict[combi](diceDto);
     }
 
+    public static bool IsContainPip(this DiceCalculateDto diceDto, int pip)
+    {
+        if (diceDto.CountList[pip] > 0) return true;
+        return false;
+    }
+
     public static bool IsContainPip(this DiceCalculateDto diceDto, params int[] pips)
     {
         foreach (var pip in pips)
