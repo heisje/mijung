@@ -5,9 +5,9 @@ public abstract class Extreme : Skill
 
     }
 
-    public override bool OnCheck(DiceCalculateDto diceDto, FieldContext fieldContext)
+    public override bool OnCheck(DiceCalculateDto diceDto, Sk_Context c)
     {
-        IsChanged = OnCheckChange(diceDto, fieldContext);
+        IsDisplayChanged = OnCheckChange(diceDto, c);
         return diceDto.GetIsCombi(Combi);
     }
 
@@ -15,7 +15,7 @@ public abstract class Extreme : Skill
     /// 변환이 가능한지 체크
     /// </summary>
     /// <returns></returns>
-    public bool OnCheckChange(DiceCalculateDto diceDto, FieldContext fieldContext)
+    public bool OnCheckChange(DiceCalculateDto diceDto, Sk_Context c)
     {
         if (diceDto.IsContainPip(6)) return true;
         return false;
@@ -27,7 +27,7 @@ public abstract class Extreme : Skill
     public override int OnSkill(DiceCalculateDto diceDto, Sk_Context c)
     {
         // Default
-        if (IsChanged) return OnChangedSkill(diceDto, c);
+        if (OnCheckChange(diceDto, c)) return OnChangedSkill(diceDto, c);
         else return OnDefaultSkill(diceDto, c);
     }
 }

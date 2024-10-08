@@ -22,13 +22,13 @@ public class SkillCard : ClickDragAndDrop
         if (Skill.IsPossible)
         {
             IsDragAndDropPossible = true;
-            string isPossible = $"    {(Skill.IsPossible ? "<color=#0000FF><size=150%>O</size></color>" : "<color=#FF0000>X</color>")}, {(Skill.IsChanged ? "<color=#FF0000>바뀜</color>" : "")}";
+            string isPossible = $"    {(Skill.IsPossible ? "<color=#0000FF><size=150%>O</size></color>" : "<color=#FF0000>X</color>")}, {(Skill.IsDisplayChanged ? "<color=#FF0000>바뀜</color>" : "")}";
             UpdateText(Skill.ID + isPossible + "\n" + Skill.Description);
         }
         else
         {
             IsDragAndDropPossible = false;
-            string isPossible = $"    {(Skill.IsPossible ? "<color=#0000FF><size=150%>O</size></color>" : "<color=#FF0000>X</color>")}, {(Skill.IsChanged ? "<color=#FF0000>바뀜</color>" : "")}";
+            string isPossible = $"    {(Skill.IsPossible ? "<color=#0000FF><size=150%>O</size></color>" : "<color=#FF0000>X</color>")}, {(Skill.IsDisplayChanged ? "<color=#FF0000>바뀜</color>" : "")}";
             UpdateText(Skill.ID + isPossible + "\n" + Skill.Description);
         }
 
@@ -70,7 +70,7 @@ public class SkillCard : ClickDragAndDrop
                     ChangeTMP.ChangeText("사용됨");
 
 
-                    GameSession.Ins.OnSkillSave(Skill.OnSkill, target);
+                    GameSession.Ins.OnSkillSave(Skill, target);
                 }
                 // }
             }

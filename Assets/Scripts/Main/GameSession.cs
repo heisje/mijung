@@ -11,7 +11,7 @@ public class GameSession : Singleton<GameSession>
     public RoundStateType RoundPreviousState = RoundStateType.DevGo;
     public int NOfRoll = 0;    // 게임 라운드 횟수 저장
     public PlayerInputType PlayerInput;
-    public Func<DiceCalculateDto, Sk_Context, int> SelectedOnSkill;
+    public Skill SelectedSkill;
     public Character SelectedTarget;
     void Start()
     {
@@ -52,7 +52,6 @@ public class GameSession : Singleton<GameSession>
             LifeCycleManager.Ins.BeforeStage();
 
             SkillManager.Ins.CreatePlayerSkillCard(Player);
-            FieldContext fieldContext = new(Player, EnemyManager.Ins.Enemies);
             // 우선권 초기화
 
             // -------------------------------------
@@ -90,27 +89,26 @@ public class GameSession : Singleton<GameSession>
                     }
                     var allDiceDTO = DiceManager.Ins.Calculate(Player.GetAllDiceValues());
                     var selectedDiceDTO = DiceManager.Ins.Calculate(Player.GetSelectedDiceValues());
+
+                    Sk_Context sk_context = new(null);
+                    SkillManager.Ins.UpdateSkills(allDiceDTO, selectedDiceDTO, sk_context);
                     switch (playerInput)
                     {
                         case PlayerInputType.ClickRoll:
                             RollDices();
-                            SkillManager.Ins.UpdateSkills(allDiceDTO, selectedDiceDTO, fieldContext);
                             break;
                         case PlayerInputType.SelectDice:
-                            SkillManager.Ins.UpdateSkills(allDiceDTO, selectedDiceDTO, fieldContext);
                             break;
                         case PlayerInputType.ClickSkill:
-                            var playerAction = new PlayerAction(SelectedOnSkill, selectedDiceDTO, new Sk_Context(SelectedTarget));
+                            var playerAction = new PlayerAction(SelectedSkill, selectedDiceDTO, new Sk_Context(SelectedTarget));
                             AttackOrderMM.Ins.PlayerActionList.Add(playerAction);
-
-                            SkillManager.Ins.UpdateSkills(allDiceDTO, selectedDiceDTO, fieldContext);
                             foreach (var dice in Player.GetSelectedDice())
                             {
                                 dice.UpdateStat(DiceState.Used);
                             }
                             break;
                     }
-
+                    SkillManager.Ins.UpdateSkills(allDiceDTO, selectedDiceDTO, sk_context);
                 }
 
                 // 우선권 초기화
@@ -196,13 +194,13 @@ public class GameSession : Singleton<GameSession>
     }
 
     // OnSkill을 저장하는 함수
-    public void OnSkillSave(Func<DiceCalculateDto, Sk_Context, int> onSkill, Character target) // PlayerAction playerAction)
+    public void OnSkillSave(Skill skill, Character target) // PlayerAction playerAction)
     {
         // 스킬을 사용했을 때 액티브
         if (UserInputTaskCompletionSource != null && !UserInputTaskCompletionSource.Task.IsCompleted)
         {
             // TODO: 묶어주기
-            SelectedOnSkill = onSkill;
+            SelectedSkill = skill;
             SelectedTarget = target;
             UserInputTaskCompletionSource.SetResult(PlayerInputType.ClickSkill);
         }

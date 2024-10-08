@@ -5,9 +5,9 @@ public abstract class Changer : Skill
 
     }
 
-    public override bool OnCheck(DiceCalculateDto diceDto, FieldContext fieldContext)
+    public override bool OnCheck(DiceCalculateDto diceDto, Sk_Context c)
     {
-        IsChanged = OnCheckChange(diceDto, fieldContext);
+        IsDisplayChanged = OnCheckChange(diceDto, c);
         return diceDto.GetIsCombi(Combi);
     }
 
@@ -15,7 +15,7 @@ public abstract class Changer : Skill
     /// 변환이 가능한지 체크
     /// </summary>
     /// <returns></returns>
-    public abstract bool OnCheckChange(DiceCalculateDto diceDto, FieldContext fieldContext);
+    public abstract bool OnCheckChange(DiceCalculateDto diceDto, Sk_Context c);
     public abstract int OnDefaultSkill(DiceCalculateDto diceDto, Sk_Context c);
     public abstract int OnChangedSkill(DiceCalculateDto diceDto, Sk_Context c);
 
@@ -23,7 +23,7 @@ public abstract class Changer : Skill
     public override int OnSkill(DiceCalculateDto diceDto, Sk_Context c)
     {
         // Default
-        if (IsChanged) return OnChangedSkill(diceDto, c);
+        if (OnCheckChange(diceDto, c)) return OnChangedSkill(diceDto, c);
         else return OnDefaultSkill(diceDto, c);
     }
 }

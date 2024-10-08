@@ -6,7 +6,7 @@ public class Sample : Changer
     {
     }
 
-    public override bool OnCheckChange(DiceCalculateDto diceDto, FieldContext fieldContext)
+    public override bool OnCheckChange(DiceCalculateDto diceDto, Sk_Context c)
     {
         if (diceDto.IsContainPip(6)) return true;
         return false;

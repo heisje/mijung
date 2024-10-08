@@ -5,9 +5,9 @@ public class P1_08 : Changer
     }
 
 
-    public override bool OnCheckChange(DiceCalculateDto diceDto, FieldContext fieldContext)
+    public override bool OnCheckChange(DiceCalculateDto diceDto, Sk_Context c)
     {
-        if (fieldContext.Player.HP <= 1) return true;
+        if (c.Player.HP <= 1) return true;
         return false;
     }
 

@@ -5,7 +5,7 @@ public abstract class Rage : Skill
 
     }
 
-    public override bool OnCheck(DiceCalculateDto diceDto, FieldContext fieldContext)
+    public override bool OnCheck(DiceCalculateDto diceDto, Sk_Context c)
     {
         return diceDto.GetIsCombi(Combi);
     }

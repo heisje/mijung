@@ -31,7 +31,7 @@ public abstract class Skill : ISkill
     public int CurrentCooldown = 0;            // 상태저장 쿨타임
     public bool IsPossible = false;     // 여러 조건으로 인한 스킬 사용가능 여부 판단
     public bool IsGlobalPossible = false;     // 여러 조건으로 인한 스킬 사용가능 여부 판단
-    public bool IsChanged = false;      // 발동 이벤트
+    public bool IsDisplayChanged = false;      // 발동 이벤트
     // --------------------------
 
     public Skill(SkillData skillData)
@@ -54,8 +54,13 @@ public abstract class Skill : ISkill
         Description = Ko_Description;
     }
 
-    // 오로지 주사위로 가능한지 여부 체크
-    public virtual bool OnCheck(DiceCalculateDto diceDto, FieldContext fieldContext)
+    /// <summary>
+    /// 스킬 사용이 가능한지 체크 
+    /// </summary>
+    /// <param name="diceDto"></param>
+    /// <param name="c">주의: 타겟은 null일 수 있음</param>
+    /// <returns></returns>
+    public virtual bool OnCheck(DiceCalculateDto diceDto, Sk_Context c)
     {
         return diceDto.GetIsCombi(Combi);
     }

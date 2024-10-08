@@ -5,13 +5,17 @@ using System;
 [Serializable]
 public class PlayerAction
 {
+    // 행동을 위해서 필요한 것
+    // 스킬
+    // 다이스
+    // 환경정보
     public Sk_Context Context;
     public DiceCalculateDto Dice;
-    private readonly Func<DiceCalculateDto, Sk_Context, int> OnSkill;
+    private readonly Skill Skill;
 
-    public PlayerAction(Func<DiceCalculateDto, Sk_Context, int> onSkill, DiceCalculateDto diceDTO, Sk_Context fieldActionContext)
+    public PlayerAction(Skill skill, DiceCalculateDto diceDTO, Sk_Context fieldActionContext)
     {
-        OnSkill = onSkill;
+        Skill = skill;
         Dice = diceDTO ?? throw new Exception("DTO 다시봐라");
         Context = fieldActionContext;
     }
@@ -30,6 +34,6 @@ public class PlayerAction
                         e.SetCondition(ECondition.Hurt, 0);
                     });
         }
-        return OnSkill(Dice, Context);
+        return Skill.OnSkill(Dice, Context);
     }
 }

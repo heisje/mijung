@@ -5,7 +5,7 @@ public class P3_03 : Skill
 
     }
 
-    public override bool OnCheck(DiceCalculateDto diceDto, FieldContext f)
+    public override bool OnCheck(DiceCalculateDto diceDto, Sk_Context c)
     {
         return diceDto.GetIsCombi(Combi);
     }
