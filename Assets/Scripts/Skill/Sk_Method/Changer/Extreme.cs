@@ -17,7 +17,7 @@ public abstract class Extreme : Skill
     /// <returns></returns>
     public bool OnCheckChange(Sk_Context c)
     {
-        if (c.DiceInfo.IsContainPip(6)) return true;
+        if (c.DiceInfo.IsContainPip(GLOBAL_CONST.EXTREME_PIP)) return true;
         return false;
     }
     public abstract int OnDefaultSkill(Sk_Context c);

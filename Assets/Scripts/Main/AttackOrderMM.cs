@@ -39,6 +39,7 @@ class AttackOrderMM : Singleton<AttackOrderMM>, ILifeCycle
 
     public void Act()
     {
+        // TODO : 상처 데미지 넣기
         List<Character> NewAttackOrder = new();
         NewAttackOrder.Add(GameSession.Ins.Player);
 
@@ -46,6 +47,7 @@ class AttackOrderMM : Singleton<AttackOrderMM>, ILifeCycle
         {
             NewAttackOrder.Add(enemy);
         }
+
         NewAttackOrder.ForEach((character) =>
         {
             character.ResetAttackOrderValue();

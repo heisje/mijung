@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public static class CharacterActions
 {
@@ -24,7 +25,7 @@ public static class CharacterActions
         return 0;
     }
 
-    public static int BoomHurt(this Character owner, Character target, DiceInfo diceInfo)
+    public static int BoomHurt(this Character owner, Character target, DiceInfo diceInfo, int hurtDamage = GLOBAL_CONST.HURT_DAMAGE)
     {
         var allDamaged = 0;
         if (diceInfo.IsContainPip(GLOBAL_CONST.HURT_PIP))
@@ -33,12 +34,26 @@ public static class CharacterActions
 
             for (var i = 0; i < count; i++)
             {
-                allDamaged += owner.Attack(target, GLOBAL_CONST.HURT_DAMAGE);
+                allDamaged += owner.Attack(target, hurtDamage);
             }
             target.SetCondition(ECondition.Hurt, 0);
         }
         return allDamaged;
     }
 
+    public static int HurtBurst(this Character owner, Character[] targets, DiceInfo diceInfo, int hurtDamage = GLOBAL_CONST.HURT_DAMAGE)
+    {
+        var allDamaged = 0;
+        foreach (var target in targets)
+        {
+            var count = target.GetCondition(ECondition.Hurt);
 
+            for (var i = 0; i < count; i++)
+            {
+                allDamaged += owner.Attack(target, hurtDamage);
+            }
+            target.SetCondition(ECondition.Hurt, 0);
+        }
+        return allDamaged;
+    }
 }

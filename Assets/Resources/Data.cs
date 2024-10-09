@@ -16,7 +16,7 @@ public static class StartDataManager
     public static readonly Dictionary<EnemyType, int> ENEMY_HP = new()
     {
         { EnemyType.Bat, 10 },
-        { EnemyType.Tiger, 120 },
+        { EnemyType.Tiger, 150 },
         { EnemyType.Ghoul, 16 },
     };
 
@@ -42,4 +42,6 @@ public static class GLOBAL_CONST
     public const int RAGE_DAMAGE = 10;
     public const int HURT_PIP = 6;
     public const int HURT_DAMAGE = 5;
+    public const int EXTREME_PIP = 6;
+    public const int EXTREME_DAMAGE = 6;
 }

@@ -1211,7 +1211,7 @@ MonoBehaviour:
   - {fileID: 1157335226}
   NOfRoll: 3
   CharacterType: 0
-  SkillStartPack: {fileID: 11400000, guid: f6c897bdb60e849af9631c97234fc7d6, type: 2}
+  SkillStartPack: {fileID: 11400000, guid: 235ee1c95407048a99b544196c82e769, type: 2}
 --- !u!4 &587590454
 Transform:
   m_ObjectHideFlags: 0
@@ -6078,15 +6078,8 @@ MonoBehaviour:
   RoundCurrentState: 0
   RoundPreviousState: 0
   NOfRoll: 0
-  DiceDTO:
-    CountList: 
-    Sum: 0
-    MaxStraightCount: 0
-  SelectedDiceDTO:
-    CountList: 
-    Sum: 0
-    MaxStraightCount: 0
   PlayerInput: 0
+  SelectedTarget: {fileID: 0}
 --- !u!4 &2012538905
 Transform:
   m_ObjectHideFlags: 0
