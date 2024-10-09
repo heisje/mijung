@@ -40,4 +40,6 @@ public static class StartDataManager
 public static class GLOBAL_CONST
 {
     public const int RAGE_DAMAGE = 10;
+    public const int HURT_PIP = 6;
+    public const int HURT_DAMAGE = 5;
 }

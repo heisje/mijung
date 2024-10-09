@@ -6,10 +6,10 @@ public class ShieldUp : Skill
     {
     }
 
-    public override int OnSkill(DiceCalculateDto diceDto, Sk_Context context)
+    public override int OnSkill(Sk_Context c)
     {
-        int value = Formulas[0].EvaluateFormula(diceDto, Combi);
-        context.Player.ShieldUp(value);
+        int value = Formulas[0].EvaluateFormula(c.DiceInfo, Combi);
+        c.Owner.ShieldUp(value);
         return 0;
     }
 }

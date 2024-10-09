@@ -5,12 +5,12 @@ public abstract class ShieldUpAdd : Skill
 
     }
 
-    public override int OnSkill(DiceCalculateDto diceDto, Sk_Context c)
+    public override int OnSkill(Sk_Context c)
     {
-        int damage = Formulas[0].EvaluateFormula(diceDto, Combi);
-        int value = Formulas[1].EvaluateFormula(diceDto, Combi);
+        int damage = Formulas[0].EvaluateFormula(c.DiceInfo, Combi);
+        int value = Formulas[1].EvaluateFormula(c.DiceInfo, Combi);
         AddAction(c, value);
-        c.Player.ShieldUp(damage);
+        c.Owner.ShieldUp(damage);
         return 0;
     }
 

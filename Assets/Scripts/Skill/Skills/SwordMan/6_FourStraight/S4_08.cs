@@ -4,11 +4,11 @@ public class S4_08 : Skill
     {
     }
 
-    public override int OnSkill(DiceCalculateDto diceDto, Sk_Context c)
+    public override int OnSkill(Sk_Context c)
     {
-        var resolved = this.EvaluateFormulas(diceDto);
+        var resolved = this.EvaluateFormulas(c.DiceInfo);
         int v0 = resolved[0];
 
-        return c.Player.Attack(c.Target, v0 + c.Player.GetCondition(ECondition.Shield));
+        return c.Owner.Attack(c.Target, v0 + c.Owner.GetCondition(ECondition.Shield));
     }
 }

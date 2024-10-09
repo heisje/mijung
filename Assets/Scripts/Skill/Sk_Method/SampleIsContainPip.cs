@@ -6,33 +6,34 @@ public class Sample : Changer
     {
     }
 
-    public override bool OnCheckChange(DiceCalculateDto diceDto, Sk_Context c)
+    public override bool OnCheckChange(Sk_Context c)
     {
-        if (diceDto.IsContainPip(6)) return true;
+        if (c.DiceInfo.IsContainPip(6)) return true;
         return false;
     }
 
-    public override int OnChangedSkill(DiceCalculateDto diceDto, Sk_Context c)
+    public override int OnChangedSkill(Sk_Context c)
     {
-        var resolved = this.EvaluateFormulas(diceDto);
+        var resolved = this.EvaluateFormulas(c.DiceInfo);
         int damage = resolved[0];
         int damageSelf = resolved[1];
         int empower = resolved[2];
 
-        var hpDamage = c.Player.Attack(c.Target, damage);
-        c.Player.HP -= damageSelf;
-        c.Player.UpdateCondition(ECondition.Empowerment, empower);
+        var hpDamage = c.Owner.Attack(c.Target, damage);
+        c.Owner.HP -= damageSelf;
+        c.Owner.UpdateCondition(ECondition.Empowerment, empower);
         return hpDamage;
     }
 
-    public override int OnDefaultSkill(DiceCalculateDto diceDto, Sk_Context c)
+    public override int OnDefaultSkill(Sk_Context c)
     {
-        var resolved = this.EvaluateFormulas(diceDto);
+        var resolved = this.EvaluateFormulas(c.DiceInfo);
         int damage = resolved[0];
         int damageSelf = resolved[1];
 
-        var hpDamage = c.Player.Attack(c.Target, damage);
-        c.Player.HP -= damageSelf;
+        var hpDamage = c.Owner.Attack(c.Target, damage);
+        c.Owner.HP -= damageSelf;
         return hpDamage;
     }
+
 }

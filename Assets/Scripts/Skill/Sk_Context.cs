@@ -6,13 +6,15 @@ using System.Collections.Generic;
 /// </summary>
 public class Sk_Context
 {
-    public Player Player;
+    public Character Owner;
     public Character Target;
     public List<Enemy> Enemies;
-    public Sk_Context(Character target)
+    public DiceInfo DiceInfo;
+    public Sk_Context(Character owner, Character target, DiceInfo diceInfo)
     {
-        Player = GameSession.Ins.Player;
-        Target = target;
-        Enemies = EnemyManager.Ins.Enemies;
+        this.Owner = owner;
+        this.Target = target;
+        this.Enemies = EnemyManager.Ins.Enemies;
+        this.DiceInfo = diceInfo;
     }
 }

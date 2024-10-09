@@ -5,9 +5,9 @@ public class Attack : Skill
 
     }
 
-    public override int OnSkill(DiceCalculateDto diceDto, Sk_Context c)
+    public override int OnSkill(Sk_Context c)
     {
-        int damage = Formulas[0].EvaluateFormula(diceDto, Combi);
-        return c.Player.Attack(c.Target, damage);
+        int damage = Formulas[0].EvaluateFormula(c.DiceInfo, Combi);
+        return c.Owner.Attack(c.Target, damage);
     }
 }

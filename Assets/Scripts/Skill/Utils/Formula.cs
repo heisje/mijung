@@ -13,7 +13,7 @@ public static class Formula
         return Convert.ToInt32(dataTable.Compute(formula, string.Empty));
     }
 
-    public static int EvaluateFormula(this string formula, DiceCalculateDto diceDto, ECombi combi)
+    public static int EvaluateFormula(this string formula, DiceInfo diceDto, ECombi combi)
     {
         // DataTable을 사용하여 수식을 계산합니다.
         var dataTable = new System.Data.DataTable();
@@ -24,7 +24,7 @@ public static class Formula
         return Convert.ToInt32(dataTable.Compute(replaceKeyFormula, string.Empty));
     }
 
-    public static int EvaluateFormula(this Skill skill, int i, DiceCalculateDto diceDto)
+    public static int EvaluateFormula(this Skill skill, int i, DiceInfo diceDto)
     {
         // DataTable을 사용하여 수식을 계산합니다.
         var dataTable = new System.Data.DataTable();
@@ -35,7 +35,7 @@ public static class Formula
         return Convert.ToInt32(dataTable.Compute(replaceKeyFormula, string.Empty));
     }
 
-    public static int[] EvaluateFormulas(this Skill skill, DiceCalculateDto diceDto)
+    public static int[] EvaluateFormulas(this Skill skill, DiceInfo diceDto)
     {
         var dataTable = new System.Data.DataTable();
         var largePipValue = diceDto.GetLargePip(skill.Combi).ToString();

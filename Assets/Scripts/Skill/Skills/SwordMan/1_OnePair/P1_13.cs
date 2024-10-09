@@ -5,14 +5,14 @@ public class P1_13 : Skill
     {
     }
 
-    public override int OnSkill(DiceCalculateDto diceDto, Sk_Context c)
+    public override int OnSkill(Sk_Context c)
     {
-        var resolved = this.EvaluateFormulas(diceDto);
+        var resolved = this.EvaluateFormulas(c.DiceInfo);
         int damage = resolved[0];
         int shield = resolved[1];
 
-        var hpDamage = c.Player.Attack(c.Target, damage);
-        c.Player.Shield += shield;
+        var hpDamage = c.Owner.Attack(c.Target, damage);
+        c.Owner.Shield += shield;
         return hpDamage;
     }
 }

@@ -5,29 +5,29 @@ public abstract class Extreme : Skill
 
     }
 
-    public override bool OnCheck(DiceCalculateDto diceDto, Sk_Context c)
+    public override bool OnCheck(Sk_Context c)
     {
-        IsDisplayChanged = OnCheckChange(diceDto, c);
-        return diceDto.GetIsCombi(Combi);
+        IsDisplayChanged = OnCheckChange(c);
+        return c.DiceInfo.GetIsCombi(Combi);
     }
 
     /// <summary>
     /// 변환이 가능한지 체크
     /// </summary>
     /// <returns></returns>
-    public bool OnCheckChange(DiceCalculateDto diceDto, Sk_Context c)
+    public bool OnCheckChange(Sk_Context c)
     {
-        if (diceDto.IsContainPip(6)) return true;
+        if (c.DiceInfo.IsContainPip(6)) return true;
         return false;
     }
-    public abstract int OnDefaultSkill(DiceCalculateDto diceDto, Sk_Context c);
-    public abstract int OnChangedSkill(DiceCalculateDto diceDto, Sk_Context c);
+    public abstract int OnDefaultSkill(Sk_Context c);
+    public abstract int OnChangedSkill(Sk_Context c);
 
     // 스킬 사용 시 효과. 핵심
-    public override int OnSkill(DiceCalculateDto diceDto, Sk_Context c)
+    public override int OnSkill(Sk_Context c)
     {
         // Default
-        if (OnCheckChange(diceDto, c)) return OnChangedSkill(diceDto, c);
-        else return OnDefaultSkill(diceDto, c);
+        if (OnCheckChange(c)) return OnChangedSkill(c);
+        else return OnDefaultSkill(c);
     }
 }

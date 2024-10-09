@@ -60,12 +60,12 @@ public abstract class Skill : ISkill
     /// <param name="diceDto"></param>
     /// <param name="c">주의: 타겟은 null일 수 있음</param>
     /// <returns></returns>
-    public virtual bool OnCheck(DiceCalculateDto diceDto, Sk_Context c)
+    public virtual bool OnCheck(Sk_Context c)
     {
-        return diceDto.GetIsCombi(Combi);
+        return c.DiceInfo.GetIsCombi(Combi);
     }
 
-    public void OnGlobalCheck(DiceCalculateDto diceDto)
+    public void OnGlobalCheck(DiceInfo diceDto)
     {
         if (diceDto.GetIsCombi(Combi))
         {
@@ -78,10 +78,10 @@ public abstract class Skill : ISkill
     }
 
     // 스킬 사용 시 효과. 핵심
-    public abstract int OnSkill(DiceCalculateDto diceDto, Sk_Context c);
+    public abstract int OnSkill(Sk_Context c);
 
     // 현재 상태에 따라 설명 업데이트
-    public virtual void UpdateDescription(DiceCalculateDto diceDto, Player p)
+    public virtual void UpdateDescription(DiceInfo diceDto, Player p)
     {
         Description = Ko_Description;
     }

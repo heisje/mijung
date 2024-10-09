@@ -4,19 +4,19 @@ public class P3_08 : Extreme
     {
     }
 
-    public override int OnChangedSkill(DiceCalculateDto diceDto, Sk_Context c)
+    public override int OnChangedSkill(Sk_Context c)
     {
-        var resolved = this.EvaluateFormulas(diceDto);
+        var resolved = this.EvaluateFormulas(c.DiceInfo);
         int shield = resolved[0];
         int shieldAppend = resolved[1];
-        return c.Player.Attack(c.Target, shield + shieldAppend);
+        return c.Owner.Attack(c.Target, shield + shieldAppend);
     }
 
-    public override int OnDefaultSkill(DiceCalculateDto diceDto, Sk_Context c)
+    public override int OnDefaultSkill(Sk_Context c)
     {
-        var resolved = this.EvaluateFormulas(diceDto);
+        var resolved = this.EvaluateFormulas(c.DiceInfo);
         int shield = resolved[0];
         int shieldAppend = resolved[1];
-        return c.Player.Attack(c.Target, shield);
+        return c.Owner.Attack(c.Target, shield);
     }
 }

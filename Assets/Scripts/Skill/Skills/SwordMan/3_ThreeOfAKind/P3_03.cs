@@ -5,43 +5,43 @@ public class P3_03 : Skill
 
     }
 
-    public override bool OnCheck(DiceCalculateDto diceDto, Sk_Context c)
+    public override bool OnCheck(Sk_Context c)
     {
-        return diceDto.GetIsCombi(Combi);
+        return c.DiceInfo.GetIsCombi(Combi);
     }
 
     /// <summary>
     /// 변환이 가능한지 체크
     /// </summary>
     /// <returns></returns>
-    public virtual bool IsCheckChange(DiceCalculateDto diceDto, Sk_Context c)
+    public bool IsCheckChange(Sk_Context c)
     {
-        if (c.Player.GetCondition(ECondition.Empowerment) >= 1) return true;
+        if (c.Owner.GetCondition(ECondition.Empowerment) >= 1) return true;
         return false;
     }
 
-    public int OnChangedSkill(DiceCalculateDto diceDto, Sk_Context c)
+    public int OnChangedSkill(Sk_Context c)
     {
-        var resolved = this.EvaluateFormulas(diceDto);
+        var resolved = this.EvaluateFormulas(c.DiceInfo);
         int shieldValue0 = resolved[0];
         int shieldValue1 = resolved[1];
-        c.Player.ShieldUp(shieldValue1);
+        c.Owner.ShieldUp(shieldValue1);
         return 0;
     }
 
-    public int OnDefaultSkill(DiceCalculateDto diceDto, Sk_Context c)
+    public int OnDefaultSkill(Sk_Context c)
     {
-        var resolved = this.EvaluateFormulas(diceDto);
+        var resolved = this.EvaluateFormulas(c.DiceInfo);
         int shieldValue0 = resolved[0];
         int shieldValue1 = resolved[1];
-        c.Player.ShieldUp(shieldValue0);
+        c.Owner.ShieldUp(shieldValue0);
         return 0;
     }
 
     // 스킬 사용 시 효과. 핵심
-    public override int OnSkill(DiceCalculateDto diceDto, Sk_Context c)
+    public override int OnSkill(Sk_Context c)
     {
-        if (IsCheckChange(diceDto, c)) return OnChangedSkill(diceDto, c);
-        else return OnDefaultSkill(diceDto, c);
+        if (IsCheckChange(c)) return OnChangedSkill(c);
+        else return OnDefaultSkill(c);
     }
 }

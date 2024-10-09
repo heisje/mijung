@@ -5,15 +5,15 @@ public class P2_07 : Skill
 
     }
 
-    public override int OnSkill(DiceCalculateDto diceDto, Sk_Context c)
+    public override int OnSkill(Sk_Context c)
     {
-        int damage = Formulas[0].EvaluateFormula(diceDto, Combi);
-        int multiple = Formulas[1].EvaluateFormula(diceDto, Combi);
+        int damage = Formulas[0].EvaluateFormula(c.DiceInfo, Combi);
+        int multiple = Formulas[1].EvaluateFormula(c.DiceInfo, Combi);
 
         var allDamage = 0;
         for (int i = 0; i < multiple; i++)
         {
-            allDamage += c.Player.Attack(c.Target, damage);
+            allDamage += c.Owner.Attack(c.Target, damage);
         }
         return allDamage;
     }

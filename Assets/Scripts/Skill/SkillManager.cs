@@ -19,20 +19,22 @@ public class SkillManager : Singleton<SkillManager>
     }
 
     // 스킬의 사용가능 여부를 변경(외부에서 사용하는 함수.)
-    public void UpdateSkills(DiceCalculateDto allDiceDto, DiceCalculateDto selectedDiceDto, Sk_Context c)
+    public void UpdateSkills(DiceInfo allDiceDto, Sk_Context player_sk_c)
     {
-        foreach (var skill in c.Player.GetHaveSkillList())
+        // TODO: PLAYER에게 종속적이지 않게 바꾸기
+        foreach (var skill in GameSession.Ins.Player.GetHaveSkillList())
         {
             skill.OnGlobalCheck(allDiceDto);
 
             skill.IsPossible = false;
-            if (skill.CurrentCooldown == 0 && skill.OnCheck(selectedDiceDto, c))
+            if (skill.CurrentCooldown == 0 && skill.OnCheck(player_sk_c))
             {
                 skill.IsPossible = true;
                 // SkillCard도 사용가능하게 바꾸는 것은 SkillCard Update에 지정되어 있음
             };
 
-            skill.UpdateDescription(selectedDiceDto, c.Player);
+            // TODO: PLAYER에게 종속적이지 않게 바꾸기
+            skill.UpdateDescription(player_sk_c.DiceInfo, GameSession.Ins.Player);
         }
     }
 

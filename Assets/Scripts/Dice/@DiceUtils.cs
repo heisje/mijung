@@ -3,8 +3,8 @@ using System.Linq;
 
 public static class DiceUtils
 {
-    public delegate bool SkillHandler(DiceCalculateDto diceDto);        // 람다식 연결용, 매개변수와 리턴값이 중요함
-    public delegate int LargePipHandler(DiceCalculateDto diceDto);      // 람다식 연결용, 매개변수와 리턴값이 중요함
+    public delegate bool SkillHandler(DiceInfo diceDto);        // 람다식 연결용, 매개변수와 리턴값이 중요함
+    public delegate int LargePipHandler(DiceInfo diceDto);      // 람다식 연결용, 매개변수와 리턴값이 중요함
     private static Dictionary<ECombi, SkillHandler> CheckCombiDict = new();      // 콤비네이션 체크
     private static Dictionary<ECombi, LargePipHandler> CheckLargePipDict = new();// 큰 수 체크
     static DiceUtils()
@@ -39,23 +39,23 @@ public static class DiceUtils
         CheckLargePipDict[ECombi.FourStraight] = (diceDto) => diceDto.StraightLargePips.TryGetValue(4, out int largePip) ? largePip : 0;
         CheckLargePipDict[ECombi.FiveStraight] = (diceDto) => diceDto.StraightLargePips.TryGetValue(5, out int largePip) ? largePip : 0;
     }
-    public static bool GetIsCombi(this DiceCalculateDto diceDto, ECombi combi)
+    public static bool GetIsCombi(this DiceInfo diceDto, ECombi combi)
     {
         return CheckCombiDict[combi](diceDto);
     }
 
-    public static int GetLargePip(this DiceCalculateDto diceDto, ECombi combi)
+    public static int GetLargePip(this DiceInfo diceDto, ECombi combi)
     {
         return CheckLargePipDict[combi](diceDto);
     }
 
-    public static bool IsContainPip(this DiceCalculateDto diceDto, int pip)
+    public static bool IsContainPip(this DiceInfo diceDto, int pip)
     {
         if (diceDto.CountList[pip] > 0) return true;
         return false;
     }
 
-    public static bool IsContainPip(this DiceCalculateDto diceDto, params int[] pips)
+    public static bool IsContainPip(this DiceInfo diceDto, params int[] pips)
     {
         foreach (var pip in pips)
         {

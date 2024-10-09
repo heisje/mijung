@@ -6,15 +6,15 @@ public class S3_04 : Skill
     {
     }
 
-    public override int OnSkill(DiceCalculateDto diceDto, Sk_Context c)
+    public override int OnSkill(Sk_Context c)
     {
-        var resolved = this.EvaluateFormulas(diceDto);
+        var resolved = this.EvaluateFormulas(c.DiceInfo);
         int v0 = resolved[0];
 
         var ec = c.Enemies.Count();
 
-        c.Player.TakeDamage(v0);
-        c.Player.UpdateCondition(ECondition.Empowerment, ec);
+        c.Owner.TakeDamage(v0);
+        c.Owner.UpdateCondition(ECondition.Empowerment, ec);
         return 0;
     }
 }

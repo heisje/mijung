@@ -23,4 +23,22 @@ public static class CharacterActions
         Owner.Shield = Math.Max(Owner.Shield + value, 0);
         return 0;
     }
+
+    public static int BoomHurt(this Character owner, Character target, DiceInfo diceInfo)
+    {
+        var allDamaged = 0;
+        if (diceInfo.IsContainPip(GLOBAL_CONST.HURT_PIP))
+        {
+            var count = target.GetCondition(ECondition.Hurt);
+
+            for (var i = 0; i < count; i++)
+            {
+                allDamaged += owner.Attack(target, GLOBAL_CONST.HURT_DAMAGE);
+            }
+            target.SetCondition(ECondition.Hurt, 0);
+        }
+        return allDamaged;
+    }
+
+
 }

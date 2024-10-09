@@ -9,31 +9,30 @@ public class PlayerAction
     // 스킬
     // 다이스
     // 환경정보
-    public Sk_Context Context;
-    public DiceCalculateDto Dice;
+    public Sk_Context SkContext;
     private readonly Skill Skill;
 
-    public PlayerAction(Skill skill, DiceCalculateDto diceDTO, Sk_Context fieldActionContext)
+    public PlayerAction(Skill skill, Sk_Context skContext)
     {
         Skill = skill;
-        Dice = diceDTO ?? throw new Exception("DTO 다시봐라");
-        Context = fieldActionContext;
+        SkContext = skContext;
     }
 
     public int Execute()
     {
-        if (Dice.IsContainPip(6))
-        {
-            Context.Enemies.ForEach(e =>
-                    {
-                        var hurt = e.GetCondition(ECondition.Hurt);
-                        for (var i = 0; i < hurt; i++)
-                        {
-                            Context.Player.Attack(e, 5);
-                        }
-                        e.SetCondition(ECondition.Hurt, 0);
-                    });
-        }
-        return Skill.OnSkill(Dice, Context);
+
+        // if (SkContext.DiceInfo.IsContainPip(6))
+        // {
+        //     SkContext.Enemies.ForEach(e =>
+        //             {
+        //                 var hurt = e.GetCondition(ECondition.Hurt);
+        //                 for (var i = 0; i < hurt; i++)
+        //                 {
+        //                     SkContext.Owner.Attack(e, 5);
+        //                 }
+        //                 e.SetCondition(ECondition.Hurt, 0);
+        //             });
+        // }
+        return Skill.OnSkill(SkContext);
     }
 }

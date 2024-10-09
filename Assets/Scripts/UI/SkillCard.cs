@@ -70,7 +70,7 @@ public class SkillCard : ClickDragAndDrop
                     ChangeTMP.ChangeText("사용됨");
 
 
-                    GameSession.Ins.OnSkillSave(Skill, target);
+                    GameSession.Ins.OnPlayerSkillInput(Skill, target);
                 }
                 // }
             }

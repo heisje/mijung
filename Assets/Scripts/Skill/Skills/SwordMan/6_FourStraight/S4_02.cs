@@ -4,22 +4,22 @@ public class S4_02 : Rage
     {
     }
 
-    public override int OnChangedSkill(DiceCalculateDto diceDto, Sk_Context c)
+    public override int OnChangedSkill(Sk_Context c)
     {
-        var resolved = this.EvaluateFormulas(diceDto);
+        var resolved = this.EvaluateFormulas(c.DiceInfo);
         int v0 = resolved[0];
         int damaged = 0;
-        damaged += c.Player.Attack(c.Target, v0);
-        damaged += c.Player.Attack(c.Target, v0);
+        damaged += c.Owner.Attack(c.Target, v0);
+        damaged += c.Owner.Attack(c.Target, v0);
         return damaged;
     }
 
-    public override int OnDefaultSkill(DiceCalculateDto diceDto, Sk_Context c)
+    public override int OnDefaultSkill(Sk_Context c)
     {
-        var resolved = this.EvaluateFormulas(diceDto);
+        var resolved = this.EvaluateFormulas(c.DiceInfo);
         int v0 = resolved[0];
         int damaged = 0;
-        damaged += c.Player.Attack(c.Target, v0);
+        damaged += c.Owner.Attack(c.Target, v0);
         return damaged;
     }
 }

@@ -6,7 +6,7 @@ public class SkillCalManager : Singleton<SkillCalManager>
 
     // 타겟에 따른 Check는 다른 함수에서 하고,
     // 스킬을 적중시키는 것만 다룸
-    public virtual int OnDefinedSkill<T>(Skill skill, DiceCalculateDto diceDto, T target) where T : Character
+    public virtual int OnDefinedSkill<T>(Skill skill, DiceInfo diceDto, T target) where T : Character
     {
         // 체력만 데미지 준 양
         int takeHealthDamage = 0;

@@ -47,7 +47,16 @@ public abstract class Character : MonoBehaviour, ILifeCycle
 
 
     // 데미지를 받음
-    public virtual int TakeDamage(int damage)
+    public int TakeDamage(int damage, int count)
+    {
+        var allDamaged = 0;
+        for (var i = 0; i < count; i++)
+        {
+            allDamaged += TakeDamage(damage);
+        }
+        return allDamaged;
+    }
+    public int TakeDamage(int damage)
     {
 
         int takeHealthDamage = 0;

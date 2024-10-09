@@ -80,18 +80,18 @@ public class GameSession : Singleton<GameSession>
                 RollCountText.ChangeText("라운드 시작: 주사위를 굴리세요");
                 while (NOfRoll >= 0)
                 {
-
                     // 유저 입력별 행동
                     PlayerInputType playerInput = await WaitForPlayerInput();
+
+                    // 반복문 빠져나가기
                     if (playerInput == PlayerInputType.ClickSkip)
                     {
                         break;
                     }
-                    var allDiceDTO = DiceManager.Ins.Calculate(Player.GetAllDiceValues());
-                    var selectedDiceDTO = DiceManager.Ins.Calculate(Player.GetSelectedDiceValues());
 
-                    Sk_Context sk_context = new(null);
-                    SkillManager.Ins.UpdateSkills(allDiceDTO, selectedDiceDTO, sk_context);
+                    // 다이스 굴림 => 전역 스킬 업데이트
+                    // 다이스 선택 => 스킬 업데이트
+
                     switch (playerInput)
                     {
                         case PlayerInputType.ClickRoll:
@@ -100,7 +100,16 @@ public class GameSession : Singleton<GameSession>
                         case PlayerInputType.SelectDice:
                             break;
                         case PlayerInputType.ClickSkill:
-                            var playerAction = new PlayerAction(SelectedSkill, selectedDiceDTO, new Sk_Context(SelectedTarget));
+
+                            var selectedDiceInfo = new DiceInfo(Player.GetSelectedDiceValues());
+
+                            Sk_Context player_sk_context = new(Player, SelectedTarget, selectedDiceInfo);
+                            if (selectedDiceInfo.IsContainPip(GLOBAL_CONST.HURT_PIP))
+                            {
+                                Player.AttackOrderValue += Player.BoomHurt(SelectedTarget, selectedDiceInfo);
+                            }
+
+                            var playerAction = new PlayerAction(SelectedSkill, player_sk_context);
                             AttackOrderMM.Ins.PlayerActionList.Add(playerAction);
                             foreach (var dice in Player.GetSelectedDice())
                             {
@@ -108,7 +117,7 @@ public class GameSession : Singleton<GameSession>
                             }
                             break;
                     }
-                    SkillManager.Ins.UpdateSkills(allDiceDTO, selectedDiceDTO, sk_context);
+                    SkillUpdate();
                 }
 
                 // 우선권 초기화
@@ -173,6 +182,14 @@ public class GameSession : Singleton<GameSession>
         }
     }
 
+    // TODO: 전역 스킬사용과 선택 스킬 사용 분리
+    public void SkillUpdate(Character Target = null)
+    {
+        var allDiceDTO = new DiceInfo(Player.GetAllDiceValues());
+        var selectedDiceDTO = new DiceInfo(Player.GetSelectedDiceValues());
+        Sk_Context player_sk_context = new(Player, Target, selectedDiceDTO);
+        SkillManager.Ins.UpdateSkills(allDiceDTO, player_sk_context);
+    }
 
     // Util, 해당 요청이 올 때까지 무한 반복 
     public async Task MatchPlayerInput(PlayerInputType matchPlayerInput)
@@ -194,7 +211,7 @@ public class GameSession : Singleton<GameSession>
     }
 
     // OnSkill을 저장하는 함수
-    public void OnSkillSave(Skill skill, Character target) // PlayerAction playerAction)
+    public void OnPlayerSkillInput(Skill skill, Character target) // PlayerAction playerAction)
     {
         // 스킬을 사용했을 때 액티브
         if (UserInputTaskCompletionSource != null && !UserInputTaskCompletionSource.Task.IsCompleted)
@@ -206,6 +223,10 @@ public class GameSession : Singleton<GameSession>
         }
     }
 
+    /// <summary>
+    /// 입력 대기상태로 변경
+    /// </summary>
+    /// <returns></returns>
     private Task<PlayerInputType> WaitForPlayerInput()
     {
         UserInputTaskCompletionSource = new TaskCompletionSource<PlayerInputType>();
