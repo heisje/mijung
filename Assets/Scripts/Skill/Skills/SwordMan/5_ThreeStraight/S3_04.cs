@@ -11,11 +11,13 @@ public class S3_04 : Skill
         var resolved = this.EvaluateFormulas(c.DiceInfo);
         int v0 = resolved[0];
 
-        var ec = c.Enemies.Count();
+        int aliveCount = c.Enemies.Where(e => e.IsAlive == ECharacterState.Alive).Count();
+
 
         c.Owner.TakeDamage(v0);
         c.Owner.TakeDamage(v0);
-        c.Owner.UpdateCondition(ECondition.Empowerment, ec);
+
+        c.Owner.UpdateCondition(ECondition.Empowerment, aliveCount);
         return 0;
     }
 }

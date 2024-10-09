@@ -17,7 +17,7 @@ public abstract class Rage : Skill
     public bool IsCheckChange(Sk_Context c)
     {
         var TurnDamaged = c.Owner.GetCondition(ECondition.TakeHP) + c.Owner.GetCondition(ECondition.TakeShield);
-        if (TurnDamaged >= GLOBAL_CONST.RAGE_DAMAGE) return true;
+        if (TurnDamaged >= GLOBAL_CONST.RAGE_LIMIT) return true;
         return false;
     }
     public abstract int OnDefaultSkill(Sk_Context c);

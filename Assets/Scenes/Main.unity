@@ -1211,7 +1211,7 @@ MonoBehaviour:
   - {fileID: 1157335226}
   NOfRoll: 3
   CharacterType: 0
-  SkillStartPack: {fileID: 11400000, guid: 235ee1c95407048a99b544196c82e769, type: 2}
+  SkillStartPack: {fileID: 11400000, guid: ee984438040bc4677b703d4b5f4e4baf, type: 2}
 --- !u!4 &587590454
 Transform:
   m_ObjectHideFlags: 0
